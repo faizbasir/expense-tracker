@@ -1,0 +1,13 @@
+.main-header {
+  background-color: #fc766aff;
+  height: 4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  top: 0;
+  justify-content: space-between;
+}
+main {
+  margin-top: 5rem;
+}
