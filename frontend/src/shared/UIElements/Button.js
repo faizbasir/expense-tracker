@@ -7,6 +7,7 @@ const Button = (props) => {
       className={`button ${props.default && "button-default"} ${
         props.inverse && "button-inverse"
       } ${props.danger && "button-danger"}`}
+      disabled={props.disabled}
     >
       {props.children}
     </button>
