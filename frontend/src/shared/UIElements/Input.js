@@ -1,26 +1,19 @@
 import React, { useEffect, useReducer, useState } from "react";
 import "./Input.css";
+import { validate } from "../util/Validator";
 
 const inputReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE":
-      return { ...state, value: action.value, isValid: action.isValid };
+      return {
+        ...state,
+        value: action.value,
+        isValid: validate(action.validators, action.value),
+      };
     case "TOUCHED":
       return { ...state, isTouched: true };
     default:
       return state;
-  }
-};
-
-const validator = (input) => {
-  if (typeof input === "number") {
-    return true;
-  } else if (typeof input === "string") {
-    if (input.trim().length === 0) {
-      return false;
-    } else {
-      return true;
-    }
   }
 };
 
@@ -35,7 +28,7 @@ const Input = (props) => {
     dispatch({
       type: "CHANGE",
       value: e.target.value,
-      isValid: validator(e.target.value),
+      validators: props.validators,
     });
   };
 

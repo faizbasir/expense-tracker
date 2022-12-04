@@ -1,6 +1,10 @@
 import React, { useCallback, useReducer, useState } from "react";
 import Button from "../shared/UIElements/Button";
 import Input from "../shared/UIElements/Input";
+import {
+  VALIDATOR_REQUIRED,
+  VALIDATOR_MINLENGTH,
+} from "../shared/util/Validator";
 
 import "./NewExpense.css";
 
@@ -9,7 +13,6 @@ const formReducer = (state, action) => {
     case "INPUT_CHANGE":
       let formIsValid = true;
       for (const id in state.inputs) {
-        console.log(id);
         if (id === action.id) {
           formIsValid = formIsValid && action.isValid;
         } else {
@@ -41,7 +44,6 @@ const NewExpense = () => {
   });
 
   const inputHandler = useCallback((id, value, isValid) => {
-    console.log(id);
     dispatch({
       type: "INPUT_CHANGE",
       value,
@@ -64,6 +66,7 @@ const NewExpense = () => {
         type="text"
         errorText="Please input a transaction summary"
         onInput={inputHandler}
+        validators={[VALIDATOR_REQUIRED()]}
       />
       <Input
         element="input"
@@ -72,6 +75,7 @@ const NewExpense = () => {
         type="number"
         errorText="Please input a transaction amount"
         onInput={inputHandler}
+        validators={[VALIDATOR_REQUIRED()]}
       />
       <Input
         element="input"
@@ -80,6 +84,7 @@ const NewExpense = () => {
         type="date"
         errorText="Please input a transaction date"
         onInput={inputHandler}
+        validators={[VALIDATOR_REQUIRED()]}
       />
       <Input
         id="description"
@@ -87,6 +92,7 @@ const NewExpense = () => {
         type="text"
         errorText="Please input a short description"
         onInput={inputHandler}
+        validators={[VALIDATOR_MINLENGTH(5)]}
       />
       <Button type="submit" default disabled={!formState.isValid}>
         Submit Transaction
