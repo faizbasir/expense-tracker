@@ -5,32 +5,9 @@ import {
   VALIDATOR_REQUIRED,
   VALIDATOR_MINLENGTH,
 } from "../shared/util/Validator";
+import { formReducer } from "../shared/Reducers/FormReducer";
 
 import "./NewExpense.css";
-
-const formReducer = (state, action) => {
-  switch (action.type) {
-    case "INPUT_CHANGE":
-      let formIsValid = true;
-      for (const id in state.inputs) {
-        if (id === action.id) {
-          formIsValid = formIsValid && action.isValid;
-        } else {
-          formIsValid = formIsValid && state.inputs[id].isValid;
-        }
-      }
-      return {
-        ...state,
-        inputs: {
-          ...state.inputs,
-          [action.id]: { value: action.value, isValid: action.isValid },
-        },
-        isValid: formIsValid,
-      };
-    default:
-      return state;
-  }
-};
 
 const NewExpense = () => {
   const [formState, dispatch] = useReducer(formReducer, {

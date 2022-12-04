@@ -1,0 +1,13 @@
+.login-form {
+  padding: 1rem;
+  background-color: #f1ac88ff;
+  width: 50%;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 6px;
+}
+a {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

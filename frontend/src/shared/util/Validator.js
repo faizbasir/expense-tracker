@@ -7,14 +7,14 @@ export const VALIDATOR_MINLENGTH = (val) => ({ type: MIN_LENGTH, value: val });
 export const VALIDATOR_MAXLENGTH = (val) => ({ type: MAX_LENGTH, value: val });
 
 export const validate = (validators, input) => {
-  let isValid = false;
+  let isValid = true;
   for (const validator of validators) {
     if (validator.type === "REQUIRED") {
-      isValid = input.trim().length >= 0;
+      isValid = isValid && input.trim().length >= 0;
     } else if (validator.type === "MIN_LENGTH") {
-      isValid = input.trim().length >= validator.value;
+      isValid = isValid && input.trim().length >= validator.value;
     } else if (validator.type === "MAX_LENGTH") {
-      isValid = input.trim().length <= validator.value;
+      isValid = isValid && input.trim().length <= validator.value;
     }
   }
   return isValid;
