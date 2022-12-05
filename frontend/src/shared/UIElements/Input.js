@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import "./Input.css";
+import { inputReducer } from "../Reducers/InputReducer";
 
 const Input = (props) => {
-  const inputChangeHandler = () => {};
+  const [inputState, dispatch] = useReducer(inputReducer, {
+    value: "",
+    isValid: false,
+    isTouched: false,
+  });
 
-  const touchHandler = () => {};
+  const inputChangeHandler = (e) => {
+    dispatch({
+      type: "CHANGE",
+      value: e.target.value,
+      validators: props.validators,
+    });
+  };
+
+  const touchHandler = () => {
+    dispatch({ type: "TOUCHED" });
+  };
 
   const element =
     props.element === "input" ? (
@@ -12,24 +27,36 @@ const Input = (props) => {
         type={props.type}
         id={props.id}
         onChange={inputChangeHandler}
-        // value={""}
         onBlur={touchHandler}
+        value={inputState.value}
       />
     ) : (
       <textarea
-        type={props.type}
         rows={props.rows || 3}
         id={props.id}
         onChange={inputChangeHandler}
-        // value={""}
         onBlur={touchHandler}
+        value={inputState.value}
       />
     );
 
+  // props that are being passed to the parent
+  const { id, onInput } = props;
+  const { value, isValid } = inputState;
+
+  useEffect(() => {
+    onInput(id, value, isValid);
+  }, [id, value, isValid, onInput]);
+
   return (
-    <div className="form-control">
+    <div
+      className={`form-control ${
+        inputState.isTouched && !inputState.isValid && "form-control--invalid"
+      }`}
+    >
       <label htmlFor={props.id}>{props.label}</label>
       {element}
+      {inputState.isTouched && !inputState.isValid && <p>{props.errorText}</p>}
     </div>
   );
 };

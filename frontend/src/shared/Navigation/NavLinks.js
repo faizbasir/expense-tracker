@@ -10,12 +10,12 @@ const NavLinks = () => {
         <NavLink to="/">Dashboard</NavLink>
       </li>
       <li>
-        <NavLink to="/expenses" exact>
+        <NavLink to="/expenses" exact="true">
           Expenses
         </NavLink>
       </li>
       <li>
-        <NavLink to="/new-expense" exact>
+        <NavLink to="/new-expense" exact="true">
           New Expense
         </NavLink>
       </li>

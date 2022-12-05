@@ -22,7 +22,9 @@
   background-color: whitesmoke;
 }
 .button:disabled,
-.button:disabled:hover {
+.button:hover:disabled,
+.button:active:disabled {
   background-color: grey;
   color: whitesmoke;
+  cursor: not-allowed;
 }
