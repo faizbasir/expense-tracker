@@ -7,7 +7,9 @@ const NavLinks = () => {
   return (
     <ul className="nav-link">
       <li>
-        <NavLink to="/">Dashboard</NavLink>
+        <NavLink to="/dashboard" exact="true">
+          Dashboard
+        </NavLink>
       </li>
       <li>
         <NavLink to="/expenses" exact="true">
@@ -17,6 +19,11 @@ const NavLinks = () => {
       <li>
         <NavLink to="/new-expense" exact="true">
           New Expense
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/" exact="true">
+          Login
         </NavLink>
       </li>
     </ul>
