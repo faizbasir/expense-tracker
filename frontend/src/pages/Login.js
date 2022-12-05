@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useReducer, useState } from "react";
+import { formReducer } from "../shared/Reducers/FormReducer";
 import Button from "../shared/UIElements/Button";
 import Input from "../shared/UIElements/Input";
 import {
@@ -9,12 +10,22 @@ import {
 
 import "./Login.css";
 
+const initialState = {
+  username: "",
+  email: "",
+  password: "",
+  isMember: true,
+};
+
 const Login = () => {
   const [isMember, setIsMember] = useState(true);
+  const [values, setValues] = useState(initialState);
+
   const toggleMember = () => {
     setIsMember(!isMember);
   };
 
+  console.log(isMember, values.isMember);
   const memberCheck = isMember ? (
     <p>
       Not a member? Register <a onClick={toggleMember}>here</a>
@@ -28,7 +39,7 @@ const Login = () => {
   const changeHandler = useCallback((id, value, isValid) => {
     console.log(id, value, isValid);
   });
-  const loginHandler = useCallback(() => {});
+  const loginHandler = () => {};
 
   return (
     <React.Fragment>
