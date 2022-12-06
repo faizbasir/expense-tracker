@@ -21,15 +21,15 @@ const DUMMY_EXPENSES = [
     date: "18/10/2022",
     user: "u1",
   },
-  // {
-  //   id: 3,
-  //   summary: "Airpods",
-  //   amount: 350,
-  //   description:
-  //     "Black Friday sale jsnfjsndafjdnfasnfdsjanf dnfsdafnsnna jdnajksndajks ndajsnd",
-  //   date: "18/10/2022",
-  //   user: "u2",
-  // },
+  {
+    id: 3,
+    summary: "Airpods",
+    amount: 350,
+    description:
+      "Black Friday sale jsnfjsndafjdnfasnfdsjanf dnfsdafnsnna jdnajksndajks ndajsnd",
+    date: "18/10/2022",
+    user: "u2",
+  },
   {
     id: 4,
     summary: "speaker",

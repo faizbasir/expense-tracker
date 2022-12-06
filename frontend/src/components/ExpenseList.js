@@ -28,7 +28,7 @@ const ExpenseList = (props) => {
   return (
     <React.Fragment>
       <div className="transaction-title">
-        <h2>Transactions</h2>
+        <h2>Expenses</h2>
       </div>
 
       <table>
@@ -36,24 +36,12 @@ const ExpenseList = (props) => {
           <tr>
             <th>Summary</th>
             <th>Amount</th>
-            <th>Description</th>
             <th>Date</th>
+            <th>Description</th>
           </tr>
         </thead>
         {tableData}
       </table>
-
-      {/* <ul className="expense-list">
-        {props.items.map((item) => (
-          <ExpenseItem
-            key={item.id}
-            id={item.id}
-            summary={item.summary}
-            amount={item.amount}
-            description={item.description}
-          />
-        ))}
-      </ul> */}
     </React.Fragment>
   );
 };
