@@ -19,6 +19,15 @@ export const formReducer = (state, action) => {
         },
         isValid: formIsValid,
       };
+    case "MEMBER_CHANGE":
+      return {
+        ...state,
+        inputs: {
+          ...state.inputs,
+          [action.id]: { value: "", isValid: !action.isValid },
+        },
+        isMember: !action.isValid,
+      };
 
     default:
       return state;

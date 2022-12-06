@@ -10,22 +10,26 @@ import {
 
 import "./Login.css";
 
-const initialState = {
-  username: "",
-  email: "",
-  password: "",
-  isMember: true,
-};
-
 const Login = () => {
   const [isMember, setIsMember] = useState(true);
-  const [values, setValues] = useState(initialState);
-
+  const [formIsValid, dispatch] = useReducer(formReducer, {
+    inputs: {
+      username: { value: "", isValid: false },
+      email: { value: "", isValid: true },
+      password: { value: "", isValid: false },
+    },
+    isMember: true,
+    isValid: false,
+  });
   const toggleMember = () => {
     setIsMember(!isMember);
+    dispatch({
+      type: "MEMBER_CHANGE",
+      id: "email",
+      isValid: isMember,
+    });
   };
 
-  console.log(isMember, values.isMember);
   const memberCheck = isMember ? (
     <p>
       Not a member? Register <a onClick={toggleMember}>here</a>
@@ -37,9 +41,18 @@ const Login = () => {
   );
 
   const changeHandler = useCallback((id, value, isValid) => {
-    console.log(id, value, isValid);
-  });
-  const loginHandler = () => {};
+    dispatch({
+      type: "INPUT_CHANGE",
+      id,
+      value,
+      isValid,
+    });
+  }, []);
+
+  const loginHandler = (e) => {
+    e.preventDefault();
+    console.log(formIsValid);
+  };
 
   return (
     <React.Fragment>
@@ -74,7 +87,9 @@ const Login = () => {
           onInput={changeHandler}
           validators={[VALIDATOR_MINLENGTH(8), VALIDATOR_MAXLENGTH(12)]}
         />
-        <Button default>Login</Button>
+        <Button default disabled={!formIsValid.isValid}>
+          Login
+        </Button>
         {memberCheck}
       </form>
     </React.Fragment>
