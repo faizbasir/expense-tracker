@@ -1,0 +1,12 @@
+td {
+  padding: 1rem;
+  max-width: 4rem;
+}
+tr {
+  vertical-align: middle;
+}
+.action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

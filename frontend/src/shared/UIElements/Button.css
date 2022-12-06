@@ -1,6 +1,7 @@
 .button {
   padding: 0.5rem 1rem;
   border-radius: 10px;
+  margin-right: 0.3rem;
 }
 .button-default,
 .button-inverse:hover {
