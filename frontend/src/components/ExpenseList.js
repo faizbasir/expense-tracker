@@ -32,12 +32,14 @@ const ExpenseList = (props) => {
       </div>
 
       <table>
-        <tr>
-          <th>Summary</th>
-          <th>Amount</th>
-          <th>Description</th>
-          <th>Date</th>
-        </tr>
+        <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th>Date</th>
+          </tr>
+        </thead>
         {tableData}
       </table>
 
