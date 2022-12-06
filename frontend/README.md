@@ -11,9 +11,12 @@
 3. new expense form logic completed
 4. Login / register page front end
 
-To Do:
+5/12/2022
 
 1. Logic for login / register page
+
+To Do:
+
 2. Expenses list
 3. user specific records
 4. Authentication
