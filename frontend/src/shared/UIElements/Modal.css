@@ -1,0 +1,41 @@
+.modal__content {
+  z-index: 100;
+  position: fixed;
+  top: 22vh;
+  left: 10%;
+  width: 80%;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  border-radius: 8px;
+  text-align: center;
+  padding: 2rem;
+}
+
+.modal-enter {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+.modal-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: all 200ms;
+}
+
+.modal-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-exit-active {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 200ms;
+}
+.modal-table td {
+  padding: 1rem;
+  text-align: left;
+}
+.td-amount {
+  max-width: 4rem;
+}
