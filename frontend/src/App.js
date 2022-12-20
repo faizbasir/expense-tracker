@@ -12,8 +12,9 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/expenses" element={<Expenses />} />
+          {/* <Route path="/expenses" element={<Expenses />} /> */}
           <Route path="/new-expense" element={<NewExpense />} />
+          <Route path="/:userId/expenses" element={<Expenses />} />
         </Routes>
       </main>
     </BrowserRouter>

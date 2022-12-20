@@ -11,9 +11,31 @@
 3. new expense form logic completed
 4. Login / register page front end
 
-To Do:
+5/12/2022
 
 1. Logic for login / register page
-2. Expenses list
-3. user specific records
-4. Authentication
+
+6/12/2022
+
+1. Expenses page basic setup
+
+To Do:
+
+1. Table styling
+2. modal for delete expense
+3. logic for edit expense
+4. user specific records
+5. Authentication
+6. Add in types of expenditure
+
+DASHBOARD
+
+1. display overview of expenditure
+2. breakdown of expenditure by month
+3. Amount spent for each expense type
+
+ENHANCEMENTS
+
+1. material UI
+2. AG grid
+3. Filter expenditure page
