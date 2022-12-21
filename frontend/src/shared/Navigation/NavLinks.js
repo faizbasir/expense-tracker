@@ -20,7 +20,7 @@ const NavLinks = () => {
       )}
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/:userId/expenses" exact="true">
+          <NavLink to="/faizbasir/expenses" exact="true">
             Expenses
           </NavLink>
         </li>

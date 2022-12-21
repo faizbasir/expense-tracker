@@ -41,11 +41,11 @@ const DUMMY_EXPENSES = [
 ];
 
 const Expenses = () => {
-  const userId = useParams();
+  const loadedExpenses = DUMMY_EXPENSES.filter(
+    (item) => item.user === "faizbasir"
+  );
 
-  console.log(userId);
-
-  return <ExpenseList items={DUMMY_EXPENSES} />;
+  return <ExpenseList items={loadedExpenses} />;
 };
 
 export default Expenses;
