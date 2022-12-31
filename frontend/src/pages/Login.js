@@ -7,10 +7,13 @@ import {
   VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRED,
 } from "../shared/util/Validator";
+import { AuthContext } from "../shared/context/auth-context";
 
 import "./Login.css";
+import { useContext } from "react";
 
 const Login = () => {
+  const auth = useContext(AuthContext);
   const [isMember, setIsMember] = useState(true);
   const [formIsValid, dispatch] = useReducer(formReducer, {
     inputs: {
@@ -51,6 +54,7 @@ const Login = () => {
 
   const loginHandler = (e) => {
     e.preventDefault();
+    auth.login();
     console.log(formIsValid);
   };
 
@@ -87,9 +91,16 @@ const Login = () => {
           onInput={changeHandler}
           validators={[VALIDATOR_MINLENGTH(8), VALIDATOR_MAXLENGTH(12)]}
         />
-        <Button default disabled={!formIsValid.isValid}>
-          Login
-        </Button>
+        {isMember && (
+          <Button default disabled={!formIsValid.isValid}>
+            Login
+          </Button>
+        )}
+        {!isMember && (
+          <Button default disabled={!formIsValid.isValid}>
+            Register
+          </Button>
+        )}
         {memberCheck}
       </form>
     </React.Fragment>

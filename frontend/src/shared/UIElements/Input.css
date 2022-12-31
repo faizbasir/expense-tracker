@@ -29,3 +29,7 @@
 .form-control--invalid p {
   color: red;
 }
+.form-control input {
+  height: 35px;
+  font-size: medium;
+}

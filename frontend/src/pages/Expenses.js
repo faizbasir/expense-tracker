@@ -11,7 +11,7 @@ const DUMMY_EXPENSES = [
     amount: 20,
     description: "Pump petrol",
     date: "18/10/2022",
-    user: "u1",
+    user: "faizbasir",
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const DUMMY_EXPENSES = [
     amount: 10,
     description: "Macdonald's meal",
     date: "18/10/2022",
-    user: "u1",
+    user: "faizbasir",
   },
   {
     id: 3,
@@ -41,9 +41,11 @@ const DUMMY_EXPENSES = [
 ];
 
 const Expenses = () => {
-  const userId = useParams().userId;
+  const loadedExpenses = DUMMY_EXPENSES.filter(
+    (item) => item.user === "faizbasir"
+  );
 
-  return <ExpenseList items={DUMMY_EXPENSES} />;
+  return <ExpenseList items={loadedExpenses} />;
 };
 
 export default Expenses;
