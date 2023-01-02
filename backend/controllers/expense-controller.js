@@ -36,12 +36,22 @@ const DUMMY_EXPENSES = [
   },
 ];
 
+const id = {
+  userId: (req) => {
+    return req.params.uid;
+  },
+  expenseId: (req) => {
+    return req.params.expenseId;
+  },
+};
+
 const getAllExpenses = (req, res, next) => {
   res.status(200).json({ "All Expenses": DUMMY_EXPENSES });
 };
 
 const getExpensesByUserId = (req, res, next) => {
-  const user = req.params.uid;
+  const user = id.userId(req);
+
   const loadedExpenses = DUMMY_EXPENSES.filter((expense) => {
     return expense.user === user;
   });
@@ -49,7 +59,8 @@ const getExpensesByUserId = (req, res, next) => {
 };
 
 const getExpenseById = (req, res, next) => {
-  const expenseId = req.params.expenseId;
+  const expenseId = id.expenseId(req);
+
   const loadedExpense = DUMMY_EXPENSES.find((expense) => {
     return expense.id === expenseId;
   });
@@ -71,35 +82,44 @@ const createNewExpense = (req, res, next) => {
 };
 
 const deleteExpenseById = (req, res, next) => {
-  const expenseId = req.params.expenseId;
+  const expenseId = id.expenseId(req);
+
+  // find index of expense to be deleted
   const expenseIndex = DUMMY_EXPENSES.indexOf(
     DUMMY_EXPENSES.find((expense) => {
       return expense.id === expenseId;
     })
   );
+
+  // dropping the item in the array
   DUMMY_EXPENSES.splice(expenseIndex, 1);
+
   res.status(200).json({ Expenses: DUMMY_EXPENSES });
 };
 
 const updateExpenseById = (req, res, next) => {
-  const expenseId = req.params.expenseId;
+  const expenseId = id.expenseId(req);
   const { summary, amount, description, date } = req.body;
 
+  // find index of expense to be updated
   const expenseIndex = DUMMY_EXPENSES.indexOf(
     DUMMY_EXPENSES.find((expense) => {
       return expense.id === expenseId;
     })
   );
 
+  // find expense to be updated
   const loadedExpense = DUMMY_EXPENSES.find((expense) => {
     return expense.id === expenseId;
   });
 
+  // update expense details with new details
   loadedExpense.summary = summary;
   loadedExpense.amount = amount;
   loadedExpense.description = description;
   loadedExpense.date = date;
 
+  // update array with updated expense
   DUMMY_EXPENSES[expenseIndex] = loadedExpense;
 
   res.status(200).json({ updatedExpense: loadedExpense });
