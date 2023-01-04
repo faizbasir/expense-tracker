@@ -63,11 +63,30 @@ const createNewUser = (req, res, next) => {
 const updateUserInfo = (req, res, next) => {
   const userId = req.params.userId;
   const { name, email, password } = req.body;
+  const loadedUser = DUMMY_USER.find((user) => {
+    return userId === user.id;
+  });
+  const userIndex = DUMMY_USER.indexOf(loadedUser);
+
+  // replacing old value with new values
+  loadedUser.name = name;
+  loadedUser.email = email;
+  loadedUser.password = password;
+
+  // replace old item with new item in array
+  DUMMY_USER[userIndex] = loadedUser;
+  res.status(200).json({ "Updated User": loadedUser });
 };
 
 // delete user from application
 const deleteUserByUserId = (req, res, next) => {
   const userId = req.params.userId;
+  const loadedUser = DUMMY_USER.find((user) => {
+    return user.id === userId;
+  });
+  const userIndex = DUMMY_USER.indexOf(loadedUser);
+  DUMMY_USER.splice(userIndex, 1);
+  res.status(200).json({ "Deleted User": loadedUser });
 };
 
 exports.getAllUsers = getAllUsers;
