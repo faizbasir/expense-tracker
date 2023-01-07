@@ -24,6 +24,12 @@ const inputValidation = (req) => {
   }
 };
 
+const existingUser = (email) => {
+  if (DUMMY_USER.find((user) => email === user.email)) {
+    throw new httpError("Email already in use", 400);
+  }
+};
+
 // Only for admin users
 const getAllUsers = (req, res, next) => {
   if (DUMMY_USER.length === 0) {
@@ -57,6 +63,7 @@ const login = (req, res, next) => {
 const createNewUser = (req, res, next) => {
   inputValidation(req);
   const { name, email, password } = req.body;
+  existingUser(email);
   const user = {
     id: shortid.generate(),
     name,

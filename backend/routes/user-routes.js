@@ -7,11 +7,11 @@ router.get("/all-users", userController.getAllUsers);
 router.post(
   "/login",
   [
-    check("name").notEmpty().withMessage("Summary cannot be empty"),
-    check("email").isEmail().normalizeEmail().withMessage("Enter valid email"),
+    check("name").notEmpty().withMessage({ msg: "Summary cannot be empty" }),
+    check("email").isEmail().withMessage({ msg: "Enter valid email" }),
     check("password")
       .isLength({ min: 5, max: 12 })
-      .withMessage("password has to be between 5 and 12 char"),
+      .withMessage({ msg: "password has to be between 5 and 12 char" }),
   ],
   userController.createNewUser
 );
@@ -19,11 +19,11 @@ router.get("/login", userController.login);
 router.patch(
   "/:userId",
   [
-    check("name").notEmpty().withMessage("Summary cannot be empty"),
-    check("email").normalizeEmail().withMessage("Enter valid email"),
+    check("name").notEmpty().withMessage({ msg: "Summary cannot be empty" }),
+    check("email").isEmail().withMessage({ msg: "Enter valid email" }),
     check("password")
       .isLength({ min: 5, max: 12 })
-      .withMessage("password has to be between 5 and 12 char"),
+      .withMessage({ msg: "password has to be between 5 and 12 char" }),
   ],
   userController.updateUserInfo
 );

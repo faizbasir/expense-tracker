@@ -11,13 +11,15 @@ router.post(
       .not()
       .isEmpty()
       .withMessage({ msg: "Summary cannot be empty" }),
-    check("amount").isNumeric().withMessage("Amount has to be a number"),
+    check("amount")
+      .isNumeric()
+      .withMessage({ msg: "Amount has to be a number" }),
     check("description")
       .isLength({ min: 5 })
-      .withMessage("Description has to be more than 5 characters"),
+      .withMessage({ msg: "Description has to be more than 5 characters" }),
     check("date")
       .isDate({ format: "DD/MM/YYYY" })
-      .withMessage("Date format: DD/MM/YYYY"),
+      .withMessage({ msg: "Date format: DD/MM/YYYY" }),
   ],
   expenseController.createNewExpense
 );
@@ -27,10 +29,19 @@ router.delete("/:expenseId", expenseController.deleteExpenseById);
 router.patch(
   "/:expenseId",
   [
-    check("summary").not().isEmpty(),
-    check("amount").isNumeric(),
-    check("description").isLength({ min: 5 }),
-    check("date").isDate({ format: "DD/MM/YYYY" }),
+    check("summary")
+      .not()
+      .isEmpty()
+      .withMessage({ msg: "Summary cannot be empty" }),
+    check("amount")
+      .isNumeric()
+      .withMessage({ msg: "Amount has to be a number" }),
+    check("description")
+      .isLength({ min: 5 })
+      .withMessage({ msg: "Description has to be more than 5 characters" }),
+    check("date")
+      .isDate({ format: "DD/MM/YYYY" })
+      .withMessage({ msg: "Date format: DD/MM/YYYY" }),
   ],
   expenseController.updateExpenseById
 );
