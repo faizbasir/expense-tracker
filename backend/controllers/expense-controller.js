@@ -1,4 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
+const httpError = require("../models/http-error");
+const { validationResult } = require("express-validator");
 
 const DUMMY_EXPENSES = [
   {
@@ -45,29 +47,55 @@ const id = {
   },
 };
 
+const inputValidation = (req) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    throw new httpError("Incorrect input data", 422);
+  }
+};
+
+// Get all expenses in db
+// only for admin users
 const getAllExpenses = (req, res, next) => {
   res.status(200).json({ "All Expenses": DUMMY_EXPENSES });
 };
 
+// getting all expenses for a user
 const getExpensesByUserId = (req, res, next) => {
   const user = id.userId(req);
 
   const loadedExpenses = DUMMY_EXPENSES.filter((expense) => {
     return expense.user === user;
   });
-  res.status(200).json({ Expenses: loadedExpenses });
+
+  if (loadedExpenses.length !== 0) {
+    res.status(200).json({ Expenses: loadedExpenses });
+  } else {
+    throw new httpError("No expenses found", 404);
+  }
 };
 
+// get an expense by the expense id
 const getExpenseById = (req, res, next) => {
   const expenseId = id.expenseId(req);
 
   const loadedExpense = DUMMY_EXPENSES.find((expense) => {
     return expense.id === expenseId;
   });
-  res.status(200).json({ loadedExpense });
+
+  if (loadedExpenses.length !== 0) {
+    res.status(200).json({ Expenses: loadedExpense });
+  } else {
+    throw new httpError("No expense found", 404);
+  }
 };
 
+// creating a new expense
 const createNewExpense = (req, res, next) => {
+  // Input validation Step
+  inputValidation(req);
+
   const { summary, amount, description, date, user } = req.body;
   const createdExpense = {
     id: uuidv4(),
@@ -81,6 +109,7 @@ const createNewExpense = (req, res, next) => {
   res.status(201).json({ Expense: createdExpense });
 };
 
+// delete expense
 const deleteExpenseById = (req, res, next) => {
   const expenseId = id.expenseId(req);
 
@@ -97,7 +126,10 @@ const deleteExpenseById = (req, res, next) => {
   res.status(200).json({ Expenses: DUMMY_EXPENSES });
 };
 
+// update details of an expense
 const updateExpenseById = (req, res, next) => {
+  inputValidation(req);
+
   const expenseId = id.expenseId(req);
   const { summary, amount, description, date } = req.body;
 

@@ -4,3 +4,5 @@ class httpError extends Error {
     this.code = errorCode;
   }
 }
+
+module.exports = httpError;
