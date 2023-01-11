@@ -4,6 +4,7 @@ const expenseRoutes = require("./routes/expenses-routes");
 const userRoutes = require("./routes/user-routes");
 const bodyParser = require("body-parser");
 const httpError = require("./models/http-error");
+const mongoose = require("mongoose");
 
 app.use(bodyParser.json());
 app.use("/api/expenses", expenseRoutes);
@@ -20,4 +21,13 @@ app.use((error, req, res, next) => {
   res.json({ message: error.message });
 });
 
-app.listen(5000);
+mongoose
+  .connect(
+    "mongodb+srv://Faiz:hell0there@cluster0.984n5hr.mongodb.net/ExpenseManager?retryWrites=true&w=majority"
+  )
+  .then(() => {
+    app.listen(5000);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
