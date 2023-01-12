@@ -1,10 +1,7 @@
-const shortid = require("shortid");
-const { get } = require("../routes/expenses-routes");
 const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const User = require("../models/users");
-const { findById } = require("../models/users");
 
 // go through user model for registration
 // encryption for password

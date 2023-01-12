@@ -1,6 +1,8 @@
 const { v4: uuidv4 } = require("uuid");
 const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
+const Expense = require("../models/expenses");
+const mongoose = require("mongoose");
 
 const DUMMY_EXPENSES = [
   {
@@ -47,18 +49,22 @@ const id = {
   },
 };
 
-const inputValidation = (req) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    console.log(errors);
-    throw new httpError("Incorrect input data", 422);
-  }
-};
-
 // Get all expenses in db
 // only for admin users
-const getAllExpenses = (req, res, next) => {
-  res.status(200).json({ "All Expenses": DUMMY_EXPENSES });
+const getAllExpenses = async (req, res, next) => {
+  let loadedExpenses;
+  try {
+    loadedExpenses = await Expense.find();
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
+  res.status(200).json({
+    "All expenses": loadedExpenses.map((expense) =>
+      expense.toObject({ getters: true })
+    ),
+  });
 };
 
 // getting all expenses for a user
@@ -77,73 +83,109 @@ const getExpensesByUserId = (req, res, next) => {
 };
 
 // get an expense by the expense id
-const getExpenseById = (req, res, next) => {
+const getExpenseById = async (req, res, next) => {
   const expenseId = id.expenseId(req);
 
-  const loadedExpense = DUMMY_EXPENSES.find((expense) => {
-    return expense.id === expenseId;
-  });
+  let expense;
+  try {
+    expense = await Expense.findById(expenseId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
 
-  if (loadedExpenses.length !== 0) {
-    res.status(200).json({ Expenses: loadedExpense });
+  if (expense) {
+    res.status(200).json({ Expenses: expense.toObject({ getters: true }) });
   } else {
-    throw new httpError("No expense found", 404);
+    return next(new httpError("No expense found", 404));
   }
 };
 
 // creating a new expense
-const createNewExpense = (req, res, next) => {
+const createNewExpense = async (req, res, next) => {
   // Input validation Step
-  inputValidation(req);
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.errors);
+    return next(new httpError("input validation error", 422));
+  }
 
+  // create new expense object
   const { summary, amount, description, date, user } = req.body;
-  const createdExpense = {
-    id: uuidv4(),
+  const createdExpense = new Expense({
     summary,
     amount,
     description,
     date,
     user,
-  };
-  DUMMY_EXPENSES.push(createdExpense);
+  });
+
+  // save new expense to db
+  try {
+    await createdExpense.save();
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to create new expense", 500));
+  }
+
   res.status(201).json({ Expense: createdExpense });
 };
 
 // delete expense
-const deleteExpenseById = (req, res, next) => {
+const deleteExpenseById = async (req, res, next) => {
   const expenseId = id.expenseId(req);
 
-  // find index of expense to be deleted
-  const expenseIndex = DUMMY_EXPENSES.indexOf(
-    DUMMY_EXPENSES.find((expense) => {
-      return expense.id === expenseId;
-    })
-  );
+  // fetch expense from db
+  let loadedExpense;
+  try {
+    loadedExpense = await Expense.findById(expenseId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
 
-  // dropping the item in the array
-  DUMMY_EXPENSES.splice(expenseIndex, 1);
+  if (!loadedExpense) {
+    return next(new httpError("expense not found", 404));
+  }
 
-  res.status(200).json({ Expenses: DUMMY_EXPENSES });
+  // delete expense from db
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await loadedExpense.remove({ session });
+    await session.commitTransaction();
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to delete entry from db", 500));
+  }
+
+  res.status(200).json({ Expenses: loadedExpense.toObject({ getters: true }) });
 };
 
 // update details of an expense
-const updateExpenseById = (req, res, next) => {
-  inputValidation(req);
+const updateExpenseById = async (req, res, next) => {
+  // input validation step
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.errors);
+    return next(new httpError("input validation error", 422));
+  }
 
   const expenseId = id.expenseId(req);
   const { summary, amount, description, date } = req.body;
 
-  // find index of expense to be updated
-  const expenseIndex = DUMMY_EXPENSES.indexOf(
-    DUMMY_EXPENSES.find((expense) => {
-      return expense.id === expenseId;
-    })
-  );
+  // fetch expense from db
+  let loadedExpense;
+  try {
+    loadedExpense = await Expense.findById(expenseId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
 
-  // find expense to be updated
-  const loadedExpense = DUMMY_EXPENSES.find((expense) => {
-    return expense.id === expenseId;
-  });
+  if (!loadedExpense) {
+    return next(new httpError("not able to find expense", 404));
+  }
 
   // update expense details with new details
   loadedExpense.summary = summary;
@@ -152,9 +194,16 @@ const updateExpenseById = (req, res, next) => {
   loadedExpense.date = date;
 
   // update array with updated expense
-  DUMMY_EXPENSES[expenseIndex] = loadedExpense;
+  try {
+    await loadedExpense.save();
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to update expense", 500));
+  }
 
-  res.status(200).json({ updatedExpense: loadedExpense });
+  res
+    .status(200)
+    .json({ updatedExpense: loadedExpense.toObject({ getters: true }) });
 };
 
 exports.getAllExpenses = getAllExpenses;
