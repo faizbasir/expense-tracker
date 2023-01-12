@@ -1,44 +1,8 @@
-const { v4: uuidv4 } = require("uuid");
 const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
 const Expense = require("../models/expenses");
+const User = require("../models/users");
 const mongoose = require("mongoose");
-
-const DUMMY_EXPENSES = [
-  {
-    id: "1",
-    summary: "Petrol",
-    amount: 20,
-    description: "Pump petrol",
-    date: "18/10/2022",
-    user: "faizbasir",
-  },
-  {
-    id: "2",
-    summary: "Food",
-    amount: 10,
-    description: "Macdonald's meal",
-    date: "18/10/2022",
-    user: "faizbasir",
-  },
-  {
-    id: "3",
-    summary: "Airpods",
-    amount: 350,
-    description:
-      "Black Friday sale jsnfjsndafjdnfasnfdsjanf dnfsdafnsnna jdnajksndajks ndajsnd",
-    date: "18/10/2022",
-    user: "u2",
-  },
-  {
-    id: "4",
-    summary: "speaker",
-    amount: 350,
-    description: "Black Friday sale",
-    date: "18/10/2022",
-    user: "u2",
-  },
-];
 
 const id = {
   userId: (req) => {
@@ -68,17 +32,26 @@ const getAllExpenses = async (req, res, next) => {
 };
 
 // getting all expenses for a user
-const getExpensesByUserId = (req, res, next) => {
-  const user = id.userId(req);
+const getExpensesByUserId = async (req, res, next) => {
+  const userId = id.userId(req);
 
-  const loadedExpenses = DUMMY_EXPENSES.filter((expense) => {
-    return expense.user === user;
-  });
+  // fetch data from db
+  let userWithExpenses;
+  try {
+    userWithExpenses = await User.findById(userId).populate("expenses");
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
 
-  if (loadedExpenses.length !== 0) {
-    res.status(200).json({ Expenses: loadedExpenses });
+  if (userWithExpenses) {
+    res.status(200).json({
+      Expenses: userWithExpenses.expenses.map((expense) =>
+        expense.toObject({ getters: true })
+      ),
+    });
   } else {
-    throw new httpError("No expenses found", 404);
+    return next(new httpError("No expenses found", 404));
   }
 };
 
@@ -111,18 +84,36 @@ const createNewExpense = async (req, res, next) => {
   }
 
   // create new expense object
-  const { summary, amount, description, date, user } = req.body;
+  const { summary, amount, description, date, creator } = req.body;
   const createdExpense = new Expense({
     summary,
     amount,
     description,
     date,
-    user,
+    creator,
   });
+
+  // check if user exist to add expense to user
+  let user;
+  try {
+    user = await User.findById(creator);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
+  if (!user) {
+    return next(new httpError("user does not exist", 404));
+  }
 
   // save new expense to db
   try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     await createdExpense.save();
+    user.expenses.push(createdExpense); // => add the mongo object id into user.expenses array
+    await user.save({ session }); // => save changes made to user schema
+    await session.commitTransaction();
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to create new expense", 500));
@@ -138,7 +129,7 @@ const deleteExpenseById = async (req, res, next) => {
   // fetch expense from db
   let loadedExpense;
   try {
-    loadedExpense = await Expense.findById(expenseId);
+    loadedExpense = await Expense.findById(expenseId).populate("creator");
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to fetch data", 500));
@@ -147,12 +138,15 @@ const deleteExpenseById = async (req, res, next) => {
   if (!loadedExpense) {
     return next(new httpError("expense not found", 404));
   }
+  console.log(loadedExpense);
 
   // delete expense from db
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
-    await loadedExpense.remove({ session });
+    await loadedExpense.remove({ session }); // => remove expense from expense schema
+    loadedExpense.creator.expenses.pull(loadedExpense); // => delete mongo object id from user.expenses array
+    await loadedExpense.creator.save({ session }); // => save changes made to user schema
     await session.commitTransaction();
   } catch (error) {
     console.log(error);

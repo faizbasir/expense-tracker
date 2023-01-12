@@ -62,7 +62,7 @@ const createNewUser = async (req, res, next) => {
     return next(new httpError("Input data error", 404));
   }
 
-  const { name, email, password, expenses } = req.body;
+  const { name, email, password } = req.body;
 
   // check for existing user
   let existingUser;
@@ -82,7 +82,7 @@ const createNewUser = async (req, res, next) => {
     name,
     email,
     password,
-    expenses,
+    expenses: [],
     role: "user",
   });
 
