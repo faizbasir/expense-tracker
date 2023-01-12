@@ -4,19 +4,10 @@ const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const User = require("../models/users");
+const { findById } = require("../models/users");
 
 // go through user model for registration
 // encryption for password
-
-DUMMY_USER = [
-  {
-    id: "2kmlkamsd1",
-    name: "Faiz Basir",
-    email: "faiz.basir23@gmail.com",
-    password: "hell0there",
-    role: "admin",
-  },
-];
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -145,14 +136,34 @@ const updateUserInfo = async (req, res, next) => {
 };
 
 // delete user from application
-const deleteUserByUserId = (req, res, next) => {
+const deleteUserByUserId = async (req, res, next) => {
   const userId = req.params.userId;
-  const loadedUser = DUMMY_USER.find((user) => {
-    return user.id === userId;
-  });
-  const userIndex = DUMMY_USER.indexOf(loadedUser);
-  DUMMY_USER.splice(userIndex, 1);
-  res.status(200).json({ "Deleted User": loadedUser });
+
+  // fetch user from db
+  let loadedUser;
+  try {
+    loadedUser = await User.findById(userId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
+  // check if user exists
+  if (!loadedUser) {
+    return next(new httpError(`user with id = ${userId} does not exist`, 404));
+  }
+
+  // Delete user from db
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await loadedUser.remove({ session });
+    await session.commitTransaction();
+    res.status(200).json({ "Deleted User": loadedUser });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("Not able to delete user", 500));
+  }
 };
 
 exports.getAllUsers = getAllUsers;
