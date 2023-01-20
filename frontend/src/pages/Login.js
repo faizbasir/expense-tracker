@@ -1,5 +1,4 @@
 import React, { useCallback, useReducer, useState } from "react";
-import { formReducer } from "../shared/Reducers/FormReducer";
 import Button from "../shared/UIElements/Button";
 import Input from "../shared/UIElements/Input";
 import {
@@ -11,26 +10,34 @@ import { AuthContext } from "../shared/context/auth-context";
 
 import "./Login.css";
 import { useContext } from "react";
+import { useForm } from "../shared/util/hooks/form-hook";
+import { useHttpClient } from "../shared/util/hooks/http-hook";
 
 const Login = () => {
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
   const [isMember, setIsMember] = useState(true);
-  const [formIsValid, dispatch] = useReducer(formReducer, {
-    inputs: {
-      username: { value: "", isValid: false },
-      email: { value: "", isValid: true },
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      name: { value: "", isValid: false },
       password: { value: "", isValid: false },
     },
-    isMember: true,
-    isValid: false,
-  });
+    false
+  );
+
   const toggleMember = () => {
-    setIsMember(!isMember);
-    dispatch({
-      type: "MEMBER_CHANGE",
-      id: "email",
-      isValid: isMember,
-    });
+    if (!isMember) {
+      setFormData(
+        { ...formState.inputs, email: undefined },
+        formState.inputs.name.isValid && formState.inputs.password.isValid
+      );
+    } else {
+      setFormData(
+        { ...formState.inputs, email: { value: "", isValid: false } },
+        false
+      );
+    }
+    setIsMember((prevMode) => !prevMode);
   };
 
   const memberCheck = isMember ? (
@@ -43,19 +50,24 @@ const Login = () => {
     </p>
   );
 
-  const changeHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: "INPUT_CHANGE",
-      id,
-      value,
-      isValid,
-    });
-  }, []);
-
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
-    auth.login();
-    console.log(formIsValid);
+    console.log(formState.inputs.name.value);
+
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/users/login",
+        "POST",
+        JSON.stringify({
+          name: formState.inputs.name.value,
+          password: formState.inputs.password.value,
+        }),
+        { "Content-Type": "application/json" }
+      );
+      console.log(responseData.user);
+      auth.login(responseData.user);
+    } catch (error) {}
+    // console.log(user);
   };
 
   return (
@@ -63,12 +75,12 @@ const Login = () => {
       <form onSubmit={loginHandler} className="login-form">
         {isMember ? <h1>Login</h1> : <h1>Register</h1>}
         <Input
-          id="username"
-          label="Username"
+          id="name"
+          label="Name"
           errorText="Please input a valid username"
           element="input"
           type="text"
-          onInput={changeHandler}
+          onInput={inputHandler}
           validators={[VALIDATOR_MINLENGTH(5)]}
         />
         {!isMember && (
@@ -78,7 +90,7 @@ const Login = () => {
             errorText="Please input a valid email"
             element="input"
             type="email"
-            onInput={changeHandler}
+            onInput={inputHandler}
             validators={[VALIDATOR_REQUIRED()]}
           />
         )}
@@ -88,16 +100,16 @@ const Login = () => {
           errorText="Please input a valid password"
           element="input"
           type="password"
-          onInput={changeHandler}
-          validators={[VALIDATOR_MINLENGTH(8), VALIDATOR_MAXLENGTH(12)]}
+          onInput={inputHandler}
+          validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_MAXLENGTH(12)]}
         />
         {isMember && (
-          <Button default disabled={!formIsValid.isValid}>
+          <Button default disabled={!formState.isValid}>
             Login
           </Button>
         )}
         {!isMember && (
-          <Button default disabled={!formIsValid.isValid}>
+          <Button default disabled={!formState.isValid}>
             Register
           </Button>
         )}

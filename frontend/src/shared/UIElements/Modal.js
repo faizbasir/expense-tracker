@@ -10,29 +10,9 @@ import { useRef } from "react";
 const ModalOverlay = (props) => {
   const content = (
     <div className="modal__content">
-      <h3>Are you sure you want to delete?</h3>
-      <table className="modal-table">
-        <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{props.data.summary}</td>
-            <td>${props.data.amount}</td>
-            <td>{props.data.date}</td>
-            <td className="td-amount">{props.data.description}</td>
-          </tr>
-        </tbody>
-      </table>
-      <Button danger>Delete</Button>
-      <Button onClick={props.onCancel} default>
-        Cancel
-      </Button>
+      <h3>{props.header}</h3>
+      <div>{props.content}</div>
+      {/* <footer>{props.footer}</footer> */}
     </div>
   );
   return ReactDOM.createPortal(content, document.getElementById("modal"));
@@ -50,7 +30,7 @@ const Modal = (props) => {
         unmountOnExit
         classNames={"modal"}
       >
-        {<ModalOverlay onCancel={props.onCancel} data={props.data} />}
+        {<ModalOverlay {...props} />}
       </CSSTransition>
     </React.Fragment>
   );

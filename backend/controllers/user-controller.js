@@ -22,11 +22,11 @@ const getAllUsers = async (req, res, next) => {
 
 // login
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { name, password } = req.body;
 
   let loadedUser;
   try {
-    loadedUser = await User.findOne({ email });
+    loadedUser = await User.findOne({ name });
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to fetch data", 500));
@@ -48,7 +48,7 @@ const login = async (req, res, next) => {
     }
   } else {
     return next(
-      new httpError("Invalid email. please check it is a valid email", 401)
+      new httpError("Invalid name. please check it is a valid email", 401)
     );
   }
 };

@@ -8,26 +8,18 @@ import {
 import { formReducer } from "../shared/Reducers/FormReducer";
 
 import "./NewExpense.css";
+import { useForm } from "../shared/util/hooks/form-hook";
 
 const NewExpense = () => {
-  const [formState, dispatch] = useReducer(formReducer, {
-    inputs: {
+  const [formState, inputHandler, setFormData] = useForm(
+    {
       summary: { value: "", isValid: false },
       amount: { value: 0, isValid: false },
       date: { value: "", isValid: false },
       description: { value: "", isValid: false },
     },
-    isValid: false,
-  });
-
-  const inputHandler = useCallback((id, value, isValid) => {
-    dispatch({
-      type: "INPUT_CHANGE",
-      value,
-      id,
-      isValid,
-    });
-  }, []);
+    false
+  );
 
   const submitFormHandler = (e) => {
     e.preventDefault();

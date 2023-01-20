@@ -8,13 +8,41 @@ const ExpenseItem = (props) => {
 
   const deleteModalHandler = () => setShowDeleteModal(!showDeleteModal);
 
+  const element = (
+    <React.Fragment>
+      <table className="modal-table">
+        <thead>
+          <tr>
+            <th>Summary</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{props.summary}</td>
+            <td>${props.amount}</td>
+            <td>{props.date}</td>
+            <td className="td-amount">{props.description}</td>
+          </tr>
+        </tbody>
+      </table>
+      <Button danger>Delete</Button>
+      <Button onClick={deleteModalHandler} default>
+        Cancel
+      </Button>
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
       {
         <Modal
+          header="Are you sure you want to delete?"
           show={showDeleteModal}
           onCancel={deleteModalHandler}
-          data={props}
+          content={element}
         />
       }
       <tbody>
