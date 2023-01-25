@@ -11,7 +11,7 @@ import "./NewExpense.css";
 import { useForm } from "../shared/util/hooks/form-hook";
 
 const NewExpense = () => {
-  const [formState, inputHandler, setFormData] = useForm(
+  const [formState, inputHandler] = useForm(
     {
       summary: { value: "", isValid: false },
       amount: { value: 0, isValid: false },
@@ -24,6 +24,8 @@ const NewExpense = () => {
   const submitFormHandler = (e) => {
     e.preventDefault();
     console.log(formState);
+    try {
+    } catch (error) {}
   };
 
   return (
