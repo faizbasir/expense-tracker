@@ -1,109 +1,166 @@
-const shortid = require("shortid");
-const { get } = require("../routes/expenses-routes");
 const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
+const mongoose = require("mongoose");
+const User = require("../models/users");
 
 // go through user model for registration
 // encryption for password
 
-DUMMY_USER = [
-  {
-    id: "2kmlkamsd1",
-    name: "Faiz Basir",
-    email: "faiz.basir23@gmail.com",
-    password: "hell0there",
-    role: "admin",
-  },
-];
-
-const inputValidation = (req) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    console.log(errors);
-    throw new httpError("Input data error", 404);
-  }
-};
-
-const existingUser = (email) => {
-  if (DUMMY_USER.find((user) => email === user.email)) {
-    throw new httpError("Email already in use", 400);
-  }
-};
-
 // Only for admin users
-const getAllUsers = (req, res, next) => {
-  if (DUMMY_USER.length === 0) {
-    throw new httpError("no users found", 404);
-  } else {
-    res.status(200).json({ Users: DUMMY_USER });
+const getAllUsers = async (req, res, next) => {
+  // add in user role check after adding in authentication
+  try {
+    const users = await User.find({}, "-password");
+    res
+      .status(200)
+      .json({ Users: users.map((user) => user.toObject({ getters: true })) });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
   }
 };
 
 // login
-const login = (req, res, next) => {
-  const { email, password } = req.body;
-  const loadedUser = DUMMY_USER.find((user) => {
-    return email === user.email;
-  });
+const login = async (req, res, next) => {
+  const { name, password } = req.body;
+
+  let loadedUser;
+  try {
+    loadedUser = await User.findOne({ name });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
   if (loadedUser) {
     if (loadedUser.password === password) {
-      res.status(200).json({ user: loadedUser });
+      res.status(200).json({
+        user: loadedUser.toObject({ getters: true }),
+        status: "logged in",
+      });
     } else {
-      throw new httpError(
-        "invalid password. please enter the correct password",
-        401
+      return next(
+        new httpError(
+          "invalid password. please enter the correct password",
+          401
+        )
       );
     }
   } else {
-    throw new httpError("Invalid email. please check it is a valid email", 401);
+    return next(
+      new httpError("Invalid name. please check it is a valid email", 401)
+    );
   }
 };
 
 // registration
-const createNewUser = (req, res, next) => {
-  inputValidation(req);
+const createNewUser = async (req, res, next) => {
+  // Input validation step
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.errors);
+    return next(new httpError("Input data error", 404));
+  }
+
   const { name, email, password } = req.body;
-  existingUser(email);
-  const user = {
-    id: shortid.generate(),
+
+  // check for existing user
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
+  if (existingUser) {
+    return next(new httpError("email already exists", 422));
+  }
+
+  // create new user object
+  const user = new User({
     name,
     email,
     password,
+    expenses: [],
     role: "user",
-  };
-  DUMMY_USER.push(user);
-  res.status(200).json({ "user created": user });
+  });
+
+  // save new user to db
+  try {
+    await user.save();
+    res.status(200).json({ "New User": user.toObject({ getters: true }) });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
 };
 
 // edit user info
-const updateUserInfo = (req, res, next) => {
-  inputValidation(req);
+const updateUserInfo = async (req, res, next) => {
+  // input validation step
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors.errors);
+    return next(new httpError("input validation error", 422));
+  }
+
   const userId = req.params.userId;
   const { name, email, password } = req.body;
-  const loadedUser = DUMMY_USER.find((user) => {
-    return userId === user.id;
-  });
-  const userIndex = DUMMY_USER.indexOf(loadedUser);
+
+  // fetching user details from db
+  let loadedUser;
+  try {
+    loadedUser = await User.findById(userId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 422));
+  }
 
   // replacing old value with new values
   loadedUser.name = name;
   loadedUser.email = email;
   loadedUser.password = password;
 
-  // replace old item with new item in array
-  DUMMY_USER[userIndex] = loadedUser;
-  res.status(200).json({ "Updated User": loadedUser });
+  // save new details to db
+  try {
+    await loadedUser.save();
+    res.status(200).json({ "Updated User": loadedUser });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to update user", 500));
+  }
 };
 
 // delete user from application
-const deleteUserByUserId = (req, res, next) => {
+const deleteUserByUserId = async (req, res, next) => {
   const userId = req.params.userId;
-  const loadedUser = DUMMY_USER.find((user) => {
-    return user.id === userId;
-  });
-  const userIndex = DUMMY_USER.indexOf(loadedUser);
-  DUMMY_USER.splice(userIndex, 1);
-  res.status(200).json({ "Deleted User": loadedUser });
+
+  // fetch user from db
+  let loadedUser;
+  try {
+    loadedUser = await User.findById(userId);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("not able to fetch data", 500));
+  }
+
+  // check if user exists
+  if (!loadedUser) {
+    return next(new httpError(`user with id = ${userId} does not exist`, 404));
+  }
+
+  // Delete user from db
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await loadedUser.remove({ session });
+    await session.commitTransaction();
+    res.status(200).json({ "Deleted User": loadedUser });
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("Not able to delete user", 500));
+  }
 };
 
 exports.getAllUsers = getAllUsers;

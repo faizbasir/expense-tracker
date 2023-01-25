@@ -5,9 +5,9 @@ const { check } = require("express-validator");
 
 router.get("/all-users", userController.getAllUsers);
 router.post(
-  "/login",
+  "/signup",
   [
-    check("name").notEmpty().withMessage({ msg: "Summary cannot be empty" }),
+    check("name").notEmpty().withMessage({ msg: "Name cannot be empty" }),
     check("email").isEmail().withMessage({ msg: "Enter valid email" }),
     check("password")
       .isLength({ min: 5, max: 12 })
@@ -15,7 +15,7 @@ router.post(
   ],
   userController.createNewUser
 );
-router.get("/login", userController.login);
+router.post("/login", userController.login);
 router.patch(
   "/:userId",
   [
