@@ -28,6 +28,9 @@ app.use((req, res, next) => {
 
 // Error messages thrown to this function
 app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(error);
+  }
   res.status(error.code);
   res.json({ message: error.message });
 });

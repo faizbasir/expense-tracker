@@ -12,7 +12,7 @@ const ModalOverlay = (props) => {
     <div className="modal__content">
       <h3>{props.header}</h3>
       <div>{props.content}</div>
-      {/* <footer>{props.footer}</footer> */}
+      <footer>{props.footer}</footer>
     </div>
   );
   return ReactDOM.createPortal(content, document.getElementById("modal"));

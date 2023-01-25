@@ -48,7 +48,7 @@ const login = async (req, res, next) => {
     }
   } else {
     return next(
-      new httpError("Invalid name. please check it is a valid email", 401)
+      new httpError("Invalid name. please check it is a valid name", 401)
     );
   }
 };
