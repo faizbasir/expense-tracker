@@ -53,19 +53,23 @@ const Login = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
+
     if (!isMember) {
-      const responseData = await sendRequest(
-        "http://localhost:5000/api/users/signup",
-        "POST",
-        JSON.stringify({
-          name: formState.inputs.name.value,
-          password: formState.inputs.password.value,
-          email: formState.inputs.email.value,
-        }),
-        { "Content-Type": "application/json" }
-      );
-      console.log(responseData);
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/users/signup",
+          "POST",
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            password: formState.inputs.password.value,
+            email: formState.inputs.email.value,
+          }),
+          { "Content-Type": "application/json" }
+        );
+        console.log(responseData);
+      } catch (error) {}
     }
+
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/users/login",
