@@ -11,6 +11,7 @@ import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import React, { useContext } from "react";
 import ErrorModal from "../shared/UIElements/ErrorModal";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const NewExpense = () => {
   const auth = useContext(AuthContext);
@@ -42,6 +43,7 @@ const NewExpense = () => {
         { "Content-Type": "application/json" }
       );
       console.log(responseData);
+      <Navigate to={`/${auth.user.id}/expenses`} />;
     } catch (error) {}
   };
 

@@ -13,14 +13,14 @@ const NavLinks = () => {
     <ul className="nav-link">
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/:userId/dashboard" exact="true">
+          <NavLink to={`/${auth.user.id}/dashboard`} exact="true">
             Dashboard
           </NavLink>
         </li>
       )}
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/faizbasir/expenses" exact="true">
+          <NavLink to={`/${auth.user.id}/expenses`} exact="true">
             Expenses
           </NavLink>
         </li>

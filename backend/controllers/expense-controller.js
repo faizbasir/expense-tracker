@@ -46,7 +46,7 @@ const getExpensesByUserId = async (req, res, next) => {
 
   if (userWithExpenses) {
     res.status(200).json({
-      Expenses: userWithExpenses.expenses.map((expense) =>
+      expenses: userWithExpenses.expenses.map((expense) =>
         expense.toObject({ getters: true })
       ),
     });
