@@ -38,7 +38,6 @@ const ExpenseList = (props) => {
             <th>Summary</th>
             <th>Amount</th>
             <th>Date</th>
-            <th>Description</th>
           </tr>
         </thead>
         {tableData}

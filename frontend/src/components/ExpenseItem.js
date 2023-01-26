@@ -35,7 +35,6 @@ const ExpenseItem = (props) => {
             <th>Summary</th>
             <th>Amount</th>
             <th>Date</th>
-            <th>Description</th>
           </tr>
         </thead>
         <tbody>
@@ -43,7 +42,6 @@ const ExpenseItem = (props) => {
             <td>{props.summary}</td>
             <td>${props.amount}</td>
             <td>{props.date}</td>
-            <td className="td-amount">{props.description}</td>
           </tr>
         </tbody>
       </table>
@@ -73,7 +71,6 @@ const ExpenseItem = (props) => {
           <td>{props.summary}</td>
           <td>${props.amount}</td>
           <td>{props.date}</td>
-          <td className="td-amount">{props.description}</td>
           <td>
             <div className="action">
               <Button default onClick={routeChangeHandler}>
