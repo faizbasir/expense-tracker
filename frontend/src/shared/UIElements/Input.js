@@ -4,7 +4,7 @@ import { inputReducer } from "../Reducers/InputReducer";
 
 const Input = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
+    value: props.value || "",
     isValid: false,
     isTouched: false,
   });

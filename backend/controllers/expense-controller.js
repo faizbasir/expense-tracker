@@ -68,7 +68,7 @@ const getExpenseById = async (req, res, next) => {
   }
 
   if (expense) {
-    res.status(200).json({ Expenses: expense.toObject({ getters: true }) });
+    res.status(200).json({ expense: expense.toObject({ getters: true }) });
   } else {
     return next(new httpError("No expense found", 404));
   }

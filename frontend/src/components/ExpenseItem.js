@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../shared/UIElements/Button";
 import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
@@ -7,6 +8,7 @@ import "./ExpenseItem.css";
 const ExpenseItem = (props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
+  const navigate = useNavigate();
 
   const deleteModalHandler = () => setShowDeleteModal(!showDeleteModal);
 
@@ -19,6 +21,10 @@ const ExpenseItem = (props) => {
       deleteModalHandler();
       props.onDelete();
     } catch (error) {}
+  };
+
+  const routeChangeHandler = () => {
+    navigate(`/edit/${props.id}`);
   };
 
   const element = (
@@ -70,7 +76,9 @@ const ExpenseItem = (props) => {
           <td className="td-amount">{props.description}</td>
           <td>
             <div className="action">
-              <Button default>Edit</Button>
+              <Button default onClick={routeChangeHandler}>
+                Edit
+              </Button>
               <Button danger onClick={deleteModalHandler}>
                 Delete
               </Button>
