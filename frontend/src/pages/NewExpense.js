@@ -14,6 +14,7 @@ import ErrorModal from "../shared/UIElements/ErrorModal";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const NewExpense = () => {
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
@@ -43,7 +44,7 @@ const NewExpense = () => {
         { "Content-Type": "application/json" }
       );
       console.log(responseData);
-      <Navigate to={`/${auth.user.id}/expenses`} />;
+      navigate(`/${auth.user.id}/expenses`);
     } catch (error) {}
   };
 

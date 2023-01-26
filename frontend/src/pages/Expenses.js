@@ -14,21 +14,31 @@ const Expenses = () => {
 
   useEffect(() => {
     const fetchExpenses = async () => {
-      console.log("entered");
       try {
         const responseData = await sendRequest(
           `http://localhost:5000/api/expenses/user/${user}`
         );
-        console.log(responseData.expenses);
         setExpenses(responseData.expenses);
       } catch (error) {}
     };
     fetchExpenses();
   }, [sendRequest]);
 
+  // load new list of places
+  const deleteHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/expenses/user/${user}`
+      );
+      setExpenses(responseData.expenses);
+    } catch (error) {}
+  };
+
   return (
     <React.Fragment>
-      {!isLoading && expenses && <ExpenseList items={expenses} />}
+      {!isLoading && expenses && (
+        <ExpenseList items={expenses} onDeleteExpense={deleteHandler} />
+      )}
     </React.Fragment>
   );
 };

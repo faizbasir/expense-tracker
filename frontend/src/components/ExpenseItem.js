@@ -1,12 +1,25 @@
 import React, { useState } from "react";
 import Button from "../shared/UIElements/Button";
 import Modal from "../shared/UIElements/Modal";
+import { useHttpClient } from "../shared/util/hooks/http-hook";
 import "./ExpenseItem.css";
 
 const ExpenseItem = (props) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
   const deleteModalHandler = () => setShowDeleteModal(!showDeleteModal);
+
+  const deleteHandler = async () => {
+    try {
+      await sendRequest(
+        `http://localhost:5000/api/expenses/${props.id}`,
+        "DELETE"
+      );
+      deleteModalHandler();
+      props.onDelete();
+    } catch (error) {}
+  };
 
   const element = (
     <React.Fragment>
@@ -28,10 +41,14 @@ const ExpenseItem = (props) => {
           </tr>
         </tbody>
       </table>
-      <Button danger>Delete</Button>
-      <Button onClick={deleteModalHandler} default>
-        Cancel
-      </Button>
+      <footer>
+        <Button danger onClick={deleteHandler}>
+          Delete
+        </Button>
+        <Button onClick={deleteModalHandler} default>
+          Cancel
+        </Button>
+      </footer>
     </React.Fragment>
   );
 

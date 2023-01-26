@@ -14,6 +14,7 @@ const ExpenseList = (props) => {
       amount={item.amount}
       date={item.date}
       description={item.description}
+      onDelete={props.onDeleteExpense}
     />
   ));
 
