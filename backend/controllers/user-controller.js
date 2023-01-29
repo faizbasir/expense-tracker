@@ -14,7 +14,7 @@ const getAllUsers = async (req, res, next) => {
     const users = await User.find({}, "-password");
     res
       .status(200)
-      .json({ Users: users.map((user) => user.toObject({ getters: true })) });
+      .json({ users: users.map((user) => user.toObject({ getters: true })) });
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to fetch data", 500));
