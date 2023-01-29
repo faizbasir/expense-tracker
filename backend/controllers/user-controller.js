@@ -2,6 +2,7 @@ const httpError = require("../models/http-error");
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const User = require("../models/users");
+const Expense = require("../models/expenses");
 
 // go through user model for registration
 // encryption for password
@@ -139,7 +140,7 @@ const deleteUserByUserId = async (req, res, next) => {
   // fetch user from db
   let loadedUser;
   try {
-    loadedUser = await User.findById(userId);
+    loadedUser = await User.findById(userId).populate("expenses");
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to fetch data", 500));
@@ -150,11 +151,14 @@ const deleteUserByUserId = async (req, res, next) => {
     return next(new httpError(`user with id = ${userId} does not exist`, 404));
   }
 
+  console.log(loadedUser);
+
   // Delete user from db
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
     await loadedUser.remove({ session });
+    await Expense.deleteMany({ creator: userId });
     await session.commitTransaction();
     res.status(200).json({ "Deleted User": loadedUser });
   } catch (error) {
