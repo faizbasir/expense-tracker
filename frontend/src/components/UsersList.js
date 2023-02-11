@@ -11,6 +11,7 @@ const UsersList = (props) => {
       name={user.name}
       email={user.email}
       role={user.role}
+      onDelete={props.onDeleteUser}
     />
   ));
 

@@ -7,6 +7,7 @@ const UserItem = (props) => {
 
   const deleteUserHandler = async () => {
     await sendRequest(`http://localhost:5000/api/users/${props.id}`, "DELETE");
+    props.onDelete();
   };
 
   return (
