@@ -12,6 +12,7 @@ import "./Login.css";
 import { useContext } from "react";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
+import ErrorModal from "../shared/UIElements/ErrorModal";
 
 const Login = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
@@ -52,7 +53,22 @@ const Login = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    console.log(formState.inputs.name.value);
+
+    if (!isMember) {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/users/signup",
+          "POST",
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            password: formState.inputs.password.value,
+            email: formState.inputs.email.value,
+          }),
+          { "Content-Type": "application/json" }
+        );
+        console.log(responseData);
+      } catch (error) {}
+    }
 
     try {
       const responseData = await sendRequest(
@@ -67,11 +83,11 @@ const Login = () => {
       console.log(responseData.user);
       auth.login(responseData.user);
     } catch (error) {}
-    // console.log(user);
   };
 
   return (
     <React.Fragment>
+      <ErrorModal error={error} onCancel={clearError} />
       <form onSubmit={loginHandler} className="login-form">
         {isMember ? <h1>Login</h1> : <h1>Register</h1>}
         <Input

@@ -18,7 +18,7 @@ router.post(
       .isLength({ min: 5 })
       .withMessage({ msg: "Description has to be more than 5 characters" }),
     check("date")
-      .isDate({ format: "DD/MM/YYYY" })
+      .isDate({ format: "YYYY/MM/DD" })
       .withMessage({ msg: "Date format: DD/MM/YYYY" }),
   ],
   expenseController.createNewExpense
@@ -40,8 +40,8 @@ router.patch(
       .isLength({ min: 5 })
       .withMessage({ msg: "Description has to be more than 5 characters" }),
     check("date")
-      .isDate({ format: "DD/MM/YYYY" })
-      .withMessage({ msg: "Date format: DD/MM/YYYY" }),
+      .isDate({ format: "YYYY/MM/DD" })
+      .withMessage({ msg: "Date format: YYYY/MM/DD" }),
   ],
   expenseController.updateExpenseById
 );

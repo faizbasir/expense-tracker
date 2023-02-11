@@ -1,51 +1,46 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useState } from "react";
+import { useContext } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseList from "../components/ExpenseList";
-
-const DUMMY_EXPENSES1 = [];
-
-const DUMMY_EXPENSES = [
-  {
-    id: 1,
-    summary: "Petrol",
-    amount: 20,
-    description: "Pump petrol",
-    date: "18/10/2022",
-    user: "faizbasir",
-  },
-  {
-    id: 2,
-    summary: "Food",
-    amount: 10,
-    description: "Macdonald's meal",
-    date: "18/10/2022",
-    user: "faizbasir",
-  },
-  {
-    id: 3,
-    summary: "Airpods",
-    amount: 350,
-    description:
-      "Black Friday sale jsnfjsndafjdnfasnfdsjanf dnfsdafnsnna jdnajksndajks ndajsnd",
-    date: "18/10/2022",
-    user: "u2",
-  },
-  {
-    id: 4,
-    summary: "speaker",
-    amount: 350,
-    description: "Black Friday sale",
-    date: "18/10/2022",
-    user: "u2",
-  },
-];
+import { AuthContext } from "../shared/context/auth-context";
+import { useHttpClient } from "../shared/util/hooks/http-hook";
 
 const Expenses = () => {
-  const loadedExpenses = DUMMY_EXPENSES.filter(
-    (item) => item.user === "faizbasir"
-  );
+  const user = useParams().userId;
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
+  const [expenses, setExpenses] = useState();
 
-  return <ExpenseList items={loadedExpenses} />;
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/expenses/user/${user}`
+        );
+        setExpenses(responseData.expenses);
+      } catch (error) {}
+    };
+    fetchExpenses();
+  }, [sendRequest]);
+
+  // load new list of places
+  const deleteHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/expenses/user/${user}`
+      );
+      setExpenses(responseData.expenses);
+    } catch (error) {}
+  };
+
+  return (
+    <React.Fragment>
+      {!isLoading && expenses && (
+        <ExpenseList items={expenses} onDeleteExpense={deleteHandler} />
+      )}
+    </React.Fragment>
+  );
 };
 
 export default Expenses;

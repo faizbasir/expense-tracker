@@ -19,9 +19,10 @@ export const useHttpClient = () => {
       } catch (error) {
         setIsLoading(false);
         setError(error.message);
-        throw new Error(error);
+        throw error;
       }
-    }
+    },
+    []
   );
 
   const clearError = () => {

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import { AuthContext } from "./shared/context/auth-context";
 import { useState } from "react";
 import { useCallback, useContext } from "react";
+import EditExpense from "./pages/EditExpense";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,6 +31,7 @@ function App() {
     routes = (
       <Routes>
         <Route path="/new-expense" element={<NewExpense />} />
+        <Route path="/edit/:expenseId" element={<EditExpense />} />
         <Route path="/:userId/expenses" element={<Expenses />} />
         <Route path="/:userId/dashboard" element={<Dashboard />} />
         <Route
