@@ -1,7 +1,14 @@
 import Button from "../shared/UIElements/Button";
+import { useHttpClient } from "../shared/util/hooks/http-hook";
 import "./UserItem.css";
 
 const UserItem = (props) => {
+  const { isLoading, sendRequest, error, clearError } = useHttpClient();
+
+  const deleteUserHandler = async () => {
+    await sendRequest(`http://localhost:5000/api/users/${props.id}`, "DELETE");
+  };
+
   return (
     <div className="user-item">
       <div className="item-content">
@@ -11,7 +18,9 @@ const UserItem = (props) => {
         <h4>Role: {props.role}</h4>
       </div>
       <div className="action">
-        <Button danger>Delete</Button>
+        <Button danger onClick={deleteUserHandler}>
+          Delete
+        </Button>
       </div>
     </div>
   );
