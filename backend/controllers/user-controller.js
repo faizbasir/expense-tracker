@@ -3,9 +3,7 @@ const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
 const User = require("../models/users");
 const Expense = require("../models/expenses");
-
-// go through user model for registration
-// encryption for password
+const bcrypt = require("bcryptjs");
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -33,24 +31,24 @@ const login = async (req, res, next) => {
     return next(new httpError("not able to fetch data", 500));
   }
 
-  if (loadedUser) {
-    if (loadedUser.password === password) {
-      res.status(200).json({
-        user: loadedUser.toObject({ getters: true }),
-        status: "logged in",
-      });
-    } else {
-      return next(
-        new httpError(
-          "invalid password. please enter the correct password",
-          401
-        )
-      );
-    }
+  let isValidPassword = false;
+
+  if (!loadedUser) {
+    return next(new httpError("User not found", 403));
   } else {
-    return next(
-      new httpError("Invalid name. please check it is a valid name", 401)
-    );
+    try {
+      isValidPassword = bcrypt.compare(password, loadedUser.password);
+    } catch (error) {
+      console.log(error);
+      return next(new httpError("Could not log you in", 500));
+    }
+  }
+
+  if (isValidPassword) {
+    res.status(200).json({
+      user: loadedUser.toObject({ getters: true }),
+      status: "logged in",
+    });
   }
 };
 
@@ -74,15 +72,32 @@ const createNewUser = async (req, res, next) => {
     return next(new httpError("not able to fetch data", 500));
   }
 
+  if (!existingUser) {
+    try {
+      existingUser = await User.findOne({ name });
+    } catch (error) {
+      console.log(error);
+      return next(new httpError("not able to fetch data", 500));
+    }
+  }
+
   if (existingUser) {
-    return next(new httpError("email already exists", 422));
+    return next(new httpError("name or email already exists", 422));
+  }
+
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("Not able to create new user.", 500));
   }
 
   // create new user object
   const user = new User({
     name,
     email,
-    password,
+    password: hashedPassword,
     expenses: [],
     role: "user",
   });
@@ -118,10 +133,18 @@ const updateUserInfo = async (req, res, next) => {
     return next(new httpError("not able to fetch data", 422));
   }
 
+  let hashedPassword;
+  try {
+    hashedPassword = bcrypt.hash(password, 12);
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("Unable to save new details", 500));
+  }
+
   // replacing old value with new values
   loadedUser.name = name;
   loadedUser.email = email;
-  loadedUser.password = password;
+  loadedUser.password = hashedPassword;
 
   // save new details to db
   try {

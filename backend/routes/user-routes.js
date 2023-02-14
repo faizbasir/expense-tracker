@@ -4,6 +4,7 @@ const userController = require("../controllers/user-controller");
 const { check } = require("express-validator");
 
 router.get("/all-users", userController.getAllUsers);
+
 router.post(
   "/signup",
   [
@@ -15,7 +16,9 @@ router.post(
   ],
   userController.createNewUser
 );
+
 router.post("/login", userController.login);
+
 router.patch(
   "/:userId",
   [
@@ -27,6 +30,7 @@ router.patch(
   ],
   userController.updateUserInfo
 );
+
 router.delete("/:userId", userController.deleteUserByUserId);
 
 module.exports = router;
