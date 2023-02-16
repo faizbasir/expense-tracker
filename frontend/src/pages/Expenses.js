@@ -8,6 +8,7 @@ import { AuthContext } from "../shared/context/auth-context";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 
 const Expenses = () => {
+  const auth = useContext(AuthContext);
   const user = useParams().userId;
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const [expenses, setExpenses] = useState();
@@ -16,13 +17,16 @@ const Expenses = () => {
     const fetchExpenses = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/user/${user}`
+          `http://localhost:5000/api/expenses/user/${user}`,
+          "GET",
+          null,
+          { Authorization: "Bearer " + auth.token }
         );
         setExpenses(responseData.expenses);
       } catch (error) {}
     };
     fetchExpenses();
-  }, [sendRequest]);
+  }, [sendRequest, auth.token, user]);
 
   // load new list of places
   const deleteHandler = async () => {

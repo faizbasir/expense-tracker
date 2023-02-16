@@ -67,6 +67,7 @@ const Login = () => {
           { "Content-Type": "application/json" }
         );
         console.log(responseData);
+        auth.login();
       } catch (error) {}
     } else {
       try {
@@ -79,8 +80,8 @@ const Login = () => {
           }),
           { "Content-Type": "application/json" }
         );
-        console.log(responseData.user);
-        auth.login(responseData.user);
+        console.log(responseData);
+        auth.login(responseData.user, responseData.token);
       } catch (error) {}
     }
   };

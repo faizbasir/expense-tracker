@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const User = require("../models/users");
 const Expense = require("../models/expenses");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -44,9 +45,23 @@ const login = async (req, res, next) => {
     }
   }
 
+  let token;
+
   if (isValidPassword) {
+    try {
+      token = jwt.sign(
+        { userId: loadedUser.id, email: loadedUser.email },
+        "secretKey",
+        { expiresIn: "2h" }
+      );
+    } catch (error) {
+      console.log(error);
+      return next(new httpError("Could not log you in", 500));
+    }
+
     res.status(200).json({
       user: loadedUser.toObject({ getters: true }),
+      token,
       status: "logged in",
     });
   }

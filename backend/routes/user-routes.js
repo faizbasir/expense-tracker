@@ -2,8 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user-controller");
 const { check } = require("express-validator");
-
-router.get("/all-users", userController.getAllUsers);
+const authCheck = require("../middleware/auth-middleware");
 
 router.post(
   "/signup",
@@ -18,6 +17,10 @@ router.post(
 );
 
 router.post("/login", userController.login);
+
+// router.use(authCheck);
+
+router.get("/all-users", userController.getAllUsers);
 
 router.patch(
   "/:userId",

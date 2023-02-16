@@ -12,22 +12,27 @@ import { useCallback, useContext } from "react";
 import EditExpense from "./pages/EditExpense";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const login = useCallback((user) => {
-    setIsLoggedIn(true);
+  const login = useCallback((user, token) => {
+    setToken(token);
     setUser(user);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ userId: user.id, token })
+    );
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUser(null);
+    localStorage.removeItem("userData");
   }, []);
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Routes>
         <Route path="/new-expense" element={<NewExpense />} />
@@ -53,8 +58,9 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
         user: user,
+        token: token,
         login: login,
         logout: logout,
       }}
