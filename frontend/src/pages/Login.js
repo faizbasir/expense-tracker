@@ -68,21 +68,21 @@ const Login = () => {
         );
         console.log(responseData);
       } catch (error) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/users/login",
+          "POST",
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            password: formState.inputs.password.value,
+          }),
+          { "Content-Type": "application/json" }
+        );
+        console.log(responseData.user);
+        auth.login(responseData.user);
+      } catch (error) {}
     }
-
-    try {
-      const responseData = await sendRequest(
-        "http://localhost:5000/api/users/login",
-        "POST",
-        JSON.stringify({
-          name: formState.inputs.name.value,
-          password: formState.inputs.password.value,
-        }),
-        { "Content-Type": "application/json" }
-      );
-      console.log(responseData.user);
-      auth.login(responseData.user);
-    } catch (error) {}
   };
 
   return (
