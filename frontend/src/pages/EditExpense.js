@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Input from "../shared/UIElements/Input";
 import Button from "../shared/UIElements/Button";
 import {
@@ -8,9 +8,6 @@ import {
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useContext } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 
 const EditExpense = (props) => {
@@ -40,7 +37,10 @@ const EditExpense = (props) => {
           date: formState.inputs.date.value,
           description: formState.inputs.description.value,
         }),
-        { "Content-Type": "application/json" }
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
       );
     } catch (error) {}
     navigate(`/${auth.user.id}/expenses`);
@@ -54,7 +54,10 @@ const EditExpense = (props) => {
     const fetchExpense = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/${expenseId}`
+          `http://localhost:5000/api/expenses/${expenseId}`,
+          "GET",
+          null,
+          { Authorization: "Bearer " + auth.token }
         );
         setExpense(responseData.expense);
         setFormData(

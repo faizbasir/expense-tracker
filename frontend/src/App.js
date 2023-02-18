@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import Expenses from "./pages/Expenses";
 import NewExpense from "./pages/NewExpense";
@@ -12,22 +11,32 @@ import { useCallback, useContext } from "react";
 import EditExpense from "./pages/EditExpense";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
-  const login = useCallback((user) => {
-    setIsLoggedIn(true);
+  const login = useCallback((user, token) => {
+    setToken(token);
     setUser(user);
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({
+        userId: user.id,
+        name: user.name,
+        email: user.email,
+        token,
+      })
+    );
   }, []);
 
   const logout = useCallback(() => {
-    setIsLoggedIn(false);
+    setToken(null);
     setUser(null);
+    localStorage.removeItem("userData");
   }, []);
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Routes>
         <Route path="/new-expense" element={<NewExpense />} />
@@ -53,8 +62,9 @@ function App() {
   return (
     <AuthContext.Provider
       value={{
-        isLoggedIn: isLoggedIn,
+        isLoggedIn: !!token,
         user: user,
+        token: token,
         login: login,
         logout: logout,
       }}

@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../shared/UIElements/Button";
 import Input from "../shared/UIElements/Input";
 import {
@@ -7,9 +7,7 @@ import {
   VALIDATOR_REQUIRED,
 } from "../shared/util/Validator";
 import { AuthContext } from "../shared/context/auth-context";
-
 import "./Login.css";
-import { useContext } from "react";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
@@ -66,23 +64,22 @@ const Login = () => {
           }),
           { "Content-Type": "application/json" }
         );
-        console.log(responseData);
+        auth.login(responseData.user, responseData.token);
+      } catch (error) {}
+    } else {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/users/login",
+          "POST",
+          JSON.stringify({
+            name: formState.inputs.name.value,
+            password: formState.inputs.password.value,
+          }),
+          { "Content-Type": "application/json" }
+        );
+        auth.login(responseData.user, responseData.token);
       } catch (error) {}
     }
-
-    try {
-      const responseData = await sendRequest(
-        "http://localhost:5000/api/users/login",
-        "POST",
-        JSON.stringify({
-          name: formState.inputs.name.value,
-          password: formState.inputs.password.value,
-        }),
-        { "Content-Type": "application/json" }
-      );
-      console.log(responseData.user);
-      auth.login(responseData.user);
-    } catch (error) {}
   };
 
   return (

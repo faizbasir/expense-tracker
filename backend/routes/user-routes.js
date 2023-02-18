@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user-controller");
 const { check } = require("express-validator");
+const authCheck = require("../middleware/auth-middleware");
 
-router.get("/all-users", userController.getAllUsers);
 router.post(
   "/signup",
   [
@@ -15,11 +15,17 @@ router.post(
   ],
   userController.createNewUser
 );
+
 router.post("/login", userController.login);
+
+router.use(authCheck);
+
+router.get("/all-users", userController.getAllUsers);
+
 router.patch(
   "/:userId",
   [
-    check("name").notEmpty().withMessage({ msg: "Summary cannot be empty" }),
+    check("name").notEmpty().withMessage({ msg: "Name cannot be empty" }),
     check("email").isEmail().withMessage({ msg: "Enter valid email" }),
     check("password")
       .isLength({ min: 5, max: 12 })
@@ -27,6 +33,7 @@ router.patch(
   ],
   userController.updateUserInfo
 );
+
 router.delete("/:userId", userController.deleteUserByUserId);
 
 module.exports = router;
