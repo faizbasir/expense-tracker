@@ -20,12 +20,11 @@ const getAllExpenses = async (req, res, next) => {
   try {
     loadedExpenses = await Expense.find();
   } catch (error) {
-    console.log(error);
     return next(new httpError("not able to fetch data", 500));
   }
 
   res.status(200).json({
-    "All expenses": loadedExpenses.map((expense) =>
+    expenses: loadedExpenses.map((expense) =>
       expense.toObject({ getters: true })
     ),
   });
@@ -40,8 +39,9 @@ const getExpensesByUserId = async (req, res, next) => {
   try {
     userWithExpenses = await User.findById(userId).populate("expenses");
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:42", 500)
+    );
   }
 
   if (userWithExpenses) {
@@ -63,8 +63,9 @@ const getExpenseById = async (req, res, next) => {
   try {
     expense = await Expense.findById(expenseId);
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:66", 500)
+    );
   }
 
   if (expense) {
@@ -80,7 +81,9 @@ const createNewExpense = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.errors);
-    return next(new httpError("input validation error", 422));
+    return next(
+      new httpError("input validation error @ expense-controller.js:84", 422)
+    );
   }
 
   // create new expense object
@@ -99,11 +102,13 @@ const createNewExpense = async (req, res, next) => {
     user = await User.findById(creator);
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:105", 500)
+    );
   }
 
   if (!user) {
-    return next(new httpError("user does not exist", 404));
+    return next(new httpError("User does not exist", 404));
   }
 
   // save new expense to db
@@ -115,11 +120,10 @@ const createNewExpense = async (req, res, next) => {
     await user.save({ session }); // => save changes made to user schema
     await session.commitTransaction();
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to create new expense", 500));
+    return next(new httpError("Not able to create new expense", 500));
   }
 
-  res.status(201).json({ Expense: createdExpense });
+  res.status(201).json({ expense: createdExpense });
 };
 
 // delete expense
@@ -132,7 +136,9 @@ const deleteExpenseById = async (req, res, next) => {
     loadedExpense = await Expense.findById(expenseId).populate("creator");
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:140", 500)
+    );
   }
 
   if (!loadedExpense) {
@@ -150,10 +156,15 @@ const deleteExpenseById = async (req, res, next) => {
     await session.commitTransaction();
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to delete entry from db", 500));
+    return next(
+      new httpError(
+        "Not able to delete entry from db @ expense-controller.js:161",
+        500
+      )
+    );
   }
 
-  res.status(200).json({ Expenses: loadedExpense.toObject({ getters: true }) });
+  res.status(200).json({ Expense: loadedExpense.toObject({ getters: true }) });
 };
 
 // update details of an expense
@@ -162,7 +173,9 @@ const updateExpenseById = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.errors);
-    return next(new httpError("input validation error", 422));
+    return next(
+      new httpError("Input validation error @ expense-controller.js:177", 422)
+    );
   }
 
   const expenseId = id.expenseId(req);
@@ -174,7 +187,9 @@ const updateExpenseById = async (req, res, next) => {
     loadedExpense = await Expense.findById(expenseId);
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:191", 500)
+    );
   }
 
   if (!loadedExpense) {
@@ -192,12 +207,15 @@ const updateExpenseById = async (req, res, next) => {
     await loadedExpense.save();
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to update expense", 500));
+    return next(
+      new httpError(
+        "Not able to update expense @ expense-controller.js:212",
+        500
+      )
+    );
   }
 
-  res
-    .status(200)
-    .json({ updatedExpense: loadedExpense.toObject({ getters: true }) });
+  res.status(200).json({ expense: loadedExpense.toObject({ getters: true }) });
 };
 
 exports.getAllExpenses = getAllExpenses;

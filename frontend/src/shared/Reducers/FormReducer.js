@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 export const formReducer = (state, action) => {
   switch (action.type) {
     case "INPUT_CHANGE":

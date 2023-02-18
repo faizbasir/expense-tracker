@@ -18,14 +18,14 @@ router.post(
 
 router.post("/login", userController.login);
 
-// router.use(authCheck);
+router.use(authCheck);
 
 router.get("/all-users", userController.getAllUsers);
 
 router.patch(
   "/:userId",
   [
-    check("name").notEmpty().withMessage({ msg: "Summary cannot be empty" }),
+    check("name").notEmpty().withMessage({ msg: "Name cannot be empty" }),
     check("email").isEmail().withMessage({ msg: "Enter valid email" }),
     check("password")
       .isLength({ min: 5, max: 12 })

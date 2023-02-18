@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 import Expenses from "./pages/Expenses";
 import NewExpense from "./pages/NewExpense";
@@ -20,7 +19,12 @@ function App() {
     setUser(user);
     localStorage.setItem(
       "userData",
-      JSON.stringify({ userId: user.id, token })
+      JSON.stringify({
+        userId: user.id,
+        name: user.name,
+        email: user.email,
+        token,
+      })
     );
   }, []);
 

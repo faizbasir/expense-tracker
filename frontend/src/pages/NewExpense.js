@@ -29,7 +29,6 @@ const NewExpense = () => {
 
   const submitFormHandler = async (e) => {
     e.preventDefault();
-    console.log(formState);
     try {
       const responseData = await sendRequest(
         "http://localhost:5000/api/expenses/new-expense",
@@ -46,7 +45,6 @@ const NewExpense = () => {
           Authorization: "Bearer " + auth.token,
         }
       );
-      console.log(responseData);
       navigate(`/${auth.user.id}/expenses`);
     } catch (error) {}
   };

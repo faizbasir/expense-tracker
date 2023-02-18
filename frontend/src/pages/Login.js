@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../shared/UIElements/Button";
 import Input from "../shared/UIElements/Input";
 import {
@@ -7,9 +7,7 @@ import {
   VALIDATOR_REQUIRED,
 } from "../shared/util/Validator";
 import { AuthContext } from "../shared/context/auth-context";
-
 import "./Login.css";
-import { useContext } from "react";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
@@ -66,8 +64,6 @@ const Login = () => {
           }),
           { "Content-Type": "application/json" }
         );
-        console.log(responseData);
-        // auth.login(responseData.user, responseData.token);
         auth.login(responseData.user, responseData.token);
       } catch (error) {}
     } else {
@@ -81,7 +77,6 @@ const Login = () => {
           }),
           { "Content-Type": "application/json" }
         );
-        console.log(responseData);
         auth.login(responseData.user, responseData.token);
       } catch (error) {}
     }

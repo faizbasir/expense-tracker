@@ -7,7 +7,6 @@ import "./NavLinks.css";
 
 const NavLinks = () => {
   const auth = useContext(AuthContext);
-  console.log(auth);
 
   return (
     <ul className="nav-link">

@@ -16,8 +16,9 @@ const getAllUsers = async (req, res, next) => {
       .status(200)
       .json({ users: users.map((user) => user.toObject({ getters: true })) });
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ user-controller.js:20", 500)
+    );
   }
 };
 
@@ -40,8 +41,12 @@ const login = async (req, res, next) => {
     try {
       isValidPassword = await bcrypt.compare(password, loadedUser.password);
     } catch (error) {
-      console.log(error);
-      return next(new httpError("Could not log you in", 500));
+      return next(
+        new httpError(
+          "Could not log in due to technical error @ user-controller.js:47",
+          500
+        )
+      );
     }
   }
 
@@ -55,17 +60,19 @@ const login = async (req, res, next) => {
         { expiresIn: "2h" }
       );
     } catch (error) {
-      console.log(error);
-      return next(new httpError("Could not log you in", 500));
+      return next(
+        new httpError(
+          "Could not log in due to technical error @ user-controller.js:65",
+          500
+        )
+      );
     }
-
     res.status(200).json({
       user: loadedUser.toObject({ getters: true }),
       token,
-      status: "logged in",
     });
   } else {
-    return next(new httpError("Wrong password", 401));
+    return next(new httpError("Wrong password. Please try again", 401));
   }
 };
 
@@ -75,31 +82,36 @@ const createNewUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.errors);
-    return next(new httpError("Input data error", 404));
+    return next(new httpError("Input data error @ user-controller.js:85", 422));
   }
 
   const { name, email, password } = req.body;
 
-  // check for existing user
+  // check for existing email
   let existingUser;
   try {
     existingUser = await User.findOne({ email });
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ user-controller.js:97", 500)
+    );
   }
 
+  // check for existing name
   if (!existingUser) {
     try {
       existingUser = await User.findOne({ name });
     } catch (error) {
       console.log(error);
-      return next(new httpError("not able to fetch data", 500));
+      return next(
+        new httpError("Not able to fetch data @ user-controller.js:108", 500)
+      );
     }
   }
 
   if (existingUser) {
-    return next(new httpError("name or email already exists", 422));
+    return next(new httpError("Name and/or Email already exists", 422));
   }
 
   let hashedPassword;
@@ -107,7 +119,12 @@ const createNewUser = async (req, res, next) => {
     hashedPassword = await bcrypt.hash(password, 12);
   } catch (error) {
     console.log(error);
-    return next(new httpError("Not able to create new user.", 500));
+    return next(
+      new httpError(
+        "Not able to create new user due to technical error @ user-controller.js:124",
+        500
+      )
+    );
   }
 
   // create new user object
@@ -123,8 +140,9 @@ const createNewUser = async (req, res, next) => {
   try {
     await user.save();
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("not able to fetch data @ user-controller.js:145", 500)
+    );
   }
 
   let token;
@@ -133,7 +151,6 @@ const createNewUser = async (req, res, next) => {
   //fetch new user from db and login
   try {
     loadedUser = await User.findOne({ name });
-    console.log(loadedUser.id);
     token = jwt.sign(
       { userId: loadedUser.id, email: loadedUser.email },
       "secretKey",
@@ -142,8 +159,9 @@ const createNewUser = async (req, res, next) => {
       }
     );
   } catch (error) {
-    console.log(error);
-    return next(new httpError("Not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ user-controller.js:163", 500)
+    );
   }
   res.status(200).json({ user: loadedUser.toObject({ getters: true }), token });
 };
@@ -154,7 +172,9 @@ const updateUserInfo = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors.errors);
-    return next(new httpError("input validation error", 422));
+    return next(
+      new httpError("Input validation error @ user-controller.js:176", 422)
+    );
   }
 
   const userId = req.params.userId;
@@ -166,15 +186,21 @@ const updateUserInfo = async (req, res, next) => {
     loadedUser = await User.findById(userId);
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 422));
+    return next(
+      new httpError("Not able to fetch data @ user-controller.js:190", 422)
+    );
   }
 
   let hashedPassword;
   try {
     hashedPassword = bcrypt.hash(password, 12);
   } catch (error) {
-    console.log(error);
-    return next(new httpError("Unable to save new details", 500));
+    return next(
+      new httpError(
+        "Unable to update details due to technical error @ user-controller.js:201",
+        500
+      )
+    );
   }
 
   // replacing old value with new values
@@ -185,10 +211,14 @@ const updateUserInfo = async (req, res, next) => {
   // save new details to db
   try {
     await loadedUser.save();
-    res.status(200).json({ "Updated User": loadedUser });
+    res.status(200).json({ user: loadedUser });
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to update user", 500));
+    return next(
+      new httpError(
+        "Not able to update details due to technical error @ user-controller.js:218",
+        500
+      )
+    );
   }
 };
 
@@ -201,8 +231,9 @@ const deleteUserByUserId = async (req, res, next) => {
   try {
     loadedUser = await User.findById(userId).populate("expenses");
   } catch (error) {
-    console.log(error);
-    return next(new httpError("not able to fetch data", 500));
+    return next(
+      new httpError("Not able to fetch data @ user-controller.js:235", 500)
+    );
   }
 
   // check if user exists
@@ -212,7 +243,7 @@ const deleteUserByUserId = async (req, res, next) => {
 
   console.log(loadedUser);
 
-  // Delete user from db
+  // Delete user and related expenses from db
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -221,8 +252,12 @@ const deleteUserByUserId = async (req, res, next) => {
     await session.commitTransaction();
     res.status(200).json({ "Deleted User": loadedUser });
   } catch (error) {
-    console.log(error);
-    return next(new httpError("Not able to delete user", 500));
+    return next(
+      new httpError(
+        "Not able to delete user due to techical error @ user-controller.js:257",
+        500
+      )
+    );
   }
 };
 
