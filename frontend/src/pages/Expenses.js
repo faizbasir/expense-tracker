@@ -32,7 +32,10 @@ const Expenses = () => {
   const deleteHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/expenses/user/${user}`
+        `http://localhost:5000/api/expenses/user/${user}`,
+        "get",
+        null,
+        { Authorization: "Bearer " + auth.token }
       );
       setExpenses(responseData.expenses);
     } catch (error) {}

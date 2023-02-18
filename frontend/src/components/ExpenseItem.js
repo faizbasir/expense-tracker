@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../shared/UIElements/Button";
 import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
+import { AuthContext } from "../shared/context/auth-context";
 import "./ExpenseItem.css";
 
 const ExpenseItem = (props) => {
+  const auth = useContext(AuthContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const navigate = useNavigate();
@@ -16,7 +18,9 @@ const ExpenseItem = (props) => {
     try {
       await sendRequest(
         `http://localhost:5000/api/expenses/${props.id}`,
-        "DELETE"
+        "DELETE",
+        null,
+        { Authorization: "Bearer " + auth.token }
       );
       deleteModalHandler();
       props.onDelete();

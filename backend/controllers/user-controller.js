@@ -5,6 +5,7 @@ const User = require("../models/users");
 const Expense = require("../models/expenses");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { findOne } = require("../models/expenses");
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -29,7 +30,6 @@ const login = async (req, res, next) => {
     loadedUser = await User.findOne({ name });
   } catch (error) {
     console.log(error);
-    return next(new httpError("not able to fetch data", 500));
   }
 
   let isValidPassword = false;
@@ -38,7 +38,7 @@ const login = async (req, res, next) => {
     return next(new httpError("User not found", 403));
   } else {
     try {
-      isValidPassword = bcrypt.compare(password, loadedUser.password);
+      isValidPassword = await bcrypt.compare(password, loadedUser.password);
     } catch (error) {
       console.log(error);
       return next(new httpError("Could not log you in", 500));
@@ -64,6 +64,8 @@ const login = async (req, res, next) => {
       token,
       status: "logged in",
     });
+  } else {
+    return next(new httpError("Wrong password", 401));
   }
 };
 
@@ -120,11 +122,30 @@ const createNewUser = async (req, res, next) => {
   // save new user to db
   try {
     await user.save();
-    res.status(200).json({ "New User": user.toObject({ getters: true }) });
   } catch (error) {
     console.log(error);
     return next(new httpError("not able to fetch data", 500));
   }
+
+  let token;
+  let loadedUser;
+
+  //fetch new user from db and login
+  try {
+    loadedUser = await User.findOne({ name });
+    console.log(loadedUser.id);
+    token = jwt.sign(
+      { userId: loadedUser.id, email: loadedUser.email },
+      "secretKey",
+      {
+        expiresIn: "2h",
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    return next(new httpError("Not able to fetch data", 500));
+  }
+  res.status(200).json({ user: loadedUser.toObject({ getters: true }), token });
 };
 
 // edit user info

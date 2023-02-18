@@ -41,7 +41,10 @@ const NewExpense = () => {
           description: formState.inputs.description.value,
           creator: auth.user.id,
         }),
-        { "Content-Type": "application/json" }
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
       );
       console.log(responseData);
       navigate(`/${auth.user.id}/expenses`);

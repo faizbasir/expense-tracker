@@ -40,7 +40,10 @@ const EditExpense = (props) => {
           date: formState.inputs.date.value,
           description: formState.inputs.description.value,
         }),
-        { "Content-Type": "application/json" }
+        {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
+        }
       );
     } catch (error) {}
     navigate(`/${auth.user.id}/expenses`);
@@ -54,7 +57,10 @@ const EditExpense = (props) => {
     const fetchExpense = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/${expenseId}`
+          `http://localhost:5000/api/expenses/${expenseId}`,
+          "GET",
+          null,
+          { Authorization: "Bearer " + auth.token }
         );
         setExpense(responseData.expense);
         setFormData(
