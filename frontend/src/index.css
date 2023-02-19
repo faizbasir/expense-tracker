@@ -2,19 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
+body {
+  margin: 0;
+  background-color: #0d1b2a;
 }
 html {
   font-family: "Sans Serif", open-sans;
 }
-body {
-  margin: 0;
-  background-color: #783937ff;
+/* * {
+  box-sizing: border-box;
 }
 .center {
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */

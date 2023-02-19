@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import "./Input.css";
+// import "./Input.css";
 import { inputReducer } from "../Reducers/InputReducer";
 
 const Input = (props) => {
@@ -29,6 +29,11 @@ const Input = (props) => {
         onChange={inputChangeHandler}
         onBlur={touchHandler}
         value={inputState.value}
+        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.2rem] ${
+          inputState.isTouched && !inputState.isValid
+            ? " bg-pink border-red text-tertiary "
+            : "bg-secondary"
+        }`}
       />
     ) : (
       <textarea
@@ -37,6 +42,11 @@ const Input = (props) => {
         onChange={inputChangeHandler}
         onBlur={touchHandler}
         value={inputState.value}
+        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.2rem] ${
+          inputState.isTouched && !inputState.isValid
+            ? " bg-pink border-red  "
+            : "bg-secondary"
+        }`}
       />
     );
 
@@ -49,14 +59,14 @@ const Input = (props) => {
   }, [id, value, isValid, onInput]);
 
   return (
-    <div
-      className={`form-control ${
-        inputState.isTouched && !inputState.isValid && "form-control--invalid"
-      }`}
-    >
-      <label htmlFor={props.id}>{props.label}</label>
+    <div>
+      <label htmlFor={props.id} className="block font-bold mt-[0.5rem]">
+        {props.label}
+      </label>
       {element}
-      {inputState.isTouched && !inputState.isValid && <p>{props.errorText}</p>}
+      {inputState.isTouched && !inputState.isValid && (
+        <p className="text-red font-semibold">{props.errorText}</p>
+      )}
     </div>
   );
 };

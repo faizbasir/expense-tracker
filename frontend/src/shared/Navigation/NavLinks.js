@@ -9,7 +9,7 @@ const NavLinks = () => {
   const auth = useContext(AuthContext);
 
   return (
-    <ul className="nav-link">
+    <ul>
       {auth.isLoggedIn && (
         <li>
           <NavLink to={`/${auth.user.id}/dashboard`} exact="true">
@@ -32,8 +32,8 @@ const NavLinks = () => {
         </li>
       )}
       {!auth.isLoggedIn && (
-        <li>
-          <NavLink to="/login" exact="true">
+        <li className=" mr-5 h-[72px] py-5">
+          <NavLink className="text-white no-underline" to="/login" exact="true">
             Login
           </NavLink>
         </li>

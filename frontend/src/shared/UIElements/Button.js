@@ -1,13 +1,14 @@
 import React from "react";
-import "./Button.css";
+// import "./Button.css";
 
 const Button = (props) => {
   return (
     <button
-      className={`button ${props.default && "button-default"} ${
-        props.inverse && "button-inverse"
-      } ${props.danger && "button-danger"}`}
-      disabled={props.disabled}
+      className={` px-[2rem] py-[0.5rem] rounded-lg my-[0.5rem] font-semibold ${
+        props.disabled
+          ? "bg-grey text-whitesmoke cursor-not-allowed"
+          : "bg-secondary text-white hover:bg-whitesmoke hover:text-secondary"
+      } `}
       onClick={props.onClick}
     >
       {props.children}
