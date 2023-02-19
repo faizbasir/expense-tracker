@@ -2,7 +2,7 @@ import React from "react";
 import MainHeader from "./MainHeader";
 import NavLinks from "./NavLinks";
 
-import "./Navigation.css";
+// import "./Navigation.css";
 
 const Navigation = () => {
   return (

@@ -1,9 +1,8 @@
 import React from "react";
-import "./MainHeader.css";
 
 const MainHeader = (props) => {
   return (
-    <header className="bg-secondary flex justify-between">
+    <header className="bg-secondary flex justify-between mb-20">
       {props.children}
     </header>
   );

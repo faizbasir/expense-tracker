@@ -3,8 +3,6 @@ import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 import UsersList from "../components/UsersList";
 
-import "./Dashboard.css";
-
 const Dashboard = () => {
   const auth = useContext(AuthContext);
   const { sendRequest, isLoading, error, clearError } = useHttpClient();

@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer, useState } from "react";
-// import "./Input.css";
 import { inputReducer } from "../Reducers/InputReducer";
 
 const Input = (props) => {
