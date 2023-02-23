@@ -99,9 +99,9 @@ const Login = () => {
     <React.Fragment>
       <ErrorModal error={error} onCancel={clearError} />
       <div className="flex mt-16">
-        <div className="px-32 max-w-[50%]">
-          <img src={image} />
-          <h3 className="px-16 text-white">
+        <div className="w-[50%]">
+          <img src={image} className="m-auto" />
+          <h3 className="m-auto w-fit text-white">
             Start tracking your spending today!
           </h3>
         </div>
