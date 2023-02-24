@@ -1,8 +1,7 @@
-import Button from "../shared/UIElements/Button";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
-import "./UserItem.css";
 import { AuthContext } from "../shared/context/auth-context";
 import { useContext } from "react";
+import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 
 const UserItem = (props) => {
   const auth = useContext(AuthContext);
@@ -19,19 +18,18 @@ const UserItem = (props) => {
   };
 
   return (
-    <div className="user-item">
-      <div className="item-content">
-        <h4>UID: {props.id}</h4>
-        <h4>Name: {props.name}</h4>
-        <h4>Email: {props.email}</h4>
-        <h4>Role: {props.role}</h4>
-      </div>
-      <div className="action">
-        <Button danger onClick={deleteUserHandler}>
-          Delete
-        </Button>
-      </div>
-    </div>
+    <tr>
+      <td className="pl-4 text-left text-md p-2">{props.id}</td>
+      <td className="pl-4 text-left text-md p-2">{props.name}</td>
+      <td className="pl-4 text-left text-md p-2">{props.email}</td>
+      <td className="pl-4 text-left text-md p-2">{props.role}</td>
+      <td className="cursor-pointer text-2xl">
+        <HiPencil />
+      </td>
+      <td className="cursor-pointer text-2xl">
+        <HiOutlineTrash onClick={deleteUserHandler} />
+      </td>
+    </tr>
   );
 };
 export default UserItem;

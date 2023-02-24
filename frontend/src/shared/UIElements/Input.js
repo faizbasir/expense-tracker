@@ -28,7 +28,7 @@ const Input = (props) => {
         onChange={inputChangeHandler}
         onBlur={touchHandler}
         value={inputState.value}
-        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.2rem] ${
+        className={`h-[35px] text-lg focus:outline-none  rounded-full my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[1.2rem] ${
           inputState.isTouched && !inputState.isValid
             ? " bg-pink border-red text-tertiary "
             : "bg-secondary"
@@ -41,7 +41,7 @@ const Input = (props) => {
         onChange={inputChangeHandler}
         onBlur={touchHandler}
         value={inputState.value}
-        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.2rem] ${
+        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.8rem] ${
           inputState.isTouched && !inputState.isValid
             ? " bg-pink border-red  "
             : "bg-secondary"

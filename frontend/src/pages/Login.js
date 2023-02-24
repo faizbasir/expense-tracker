@@ -44,7 +44,7 @@ const Login = () => {
     <p>
       Not a member? Register{" "}
       <a
-        className="text-blue underline decoration-solid cursor-pointer"
+        className="text-secondary underline decoration-solid cursor-pointer hover:text-white"
         onClick={toggleMember}
       >
         here
@@ -54,7 +54,7 @@ const Login = () => {
     <p>
       Already a member? Login{" "}
       <a
-        className="text-blue underline decoration-solid cursor-pointer"
+        className="text-secondary underline decoration-solid cursor-pointer hover:text-white"
         onClick={toggleMember}
       >
         here
@@ -98,7 +98,7 @@ const Login = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onCancel={clearError} />
-      <div className="flex mt-16">
+      <div className="flex">
         <div className="w-[50%]">
           <img src={image} className="m-auto" />
           <h3 className="m-auto w-fit text-white">

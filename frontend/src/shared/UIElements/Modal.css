@@ -1,4 +1,4 @@
-.modal__content {
+/* .modal__content {
   z-index: 100;
   position: fixed;
   top: 22vh;
@@ -8,7 +8,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   border-radius: 8px;
   text-align: center;
-  /* padding: 2rem; */
 }
 
 .modal-enter {
@@ -42,4 +41,4 @@
 
 footer {
   margin-top: 20px;
-}
+} */

@@ -40,8 +40,10 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       {!isLoading && users && (
-        <div className="user-list">
-          <h2>Users</h2>
+        <div>
+          <h2 className="text-whitesmoke m-auto max-w-[50%] text-2xl mb-6">
+            Users
+          </h2>
           <UsersList users={users} onDeleteUser={deleteUserHandler} />
         </div>
       )}
