@@ -2,14 +2,16 @@ import React from "react";
 import MainHeader from "./MainHeader";
 import NavLinks from "./NavLinks";
 
-import "./Navigation.css";
+// import "./Navigation.css";
 
 const Navigation = () => {
   return (
     <React.Fragment>
       <MainHeader>
-        <h2>Expense Manager</h2>
-        <nav className="navigation__header-nav">
+        <h2 className="text-white font-bold text-2xl ml-5 p-5 ">
+          Expense Manager
+        </h2>
+        <nav className="">
           <NavLinks />
         </nav>
       </MainHeader>

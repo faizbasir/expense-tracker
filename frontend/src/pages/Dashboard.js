@@ -3,8 +3,6 @@ import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 import UsersList from "../components/UsersList";
 
-import "./Dashboard.css";
-
 const Dashboard = () => {
   const auth = useContext(AuthContext);
   const { sendRequest, isLoading, error, clearError } = useHttpClient();
@@ -42,8 +40,10 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       {!isLoading && users && (
-        <div className="user-list">
-          <h2>Users</h2>
+        <div>
+          <h2 className="text-whitesmoke m-auto max-w-[50%] text-2xl mb-6">
+            Users
+          </h2>
           <UsersList users={users} onDeleteUser={deleteUserHandler} />
         </div>
       )}

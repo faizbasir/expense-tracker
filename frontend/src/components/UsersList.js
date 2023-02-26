@@ -1,6 +1,5 @@
 import React from "react";
 import UserItem from "./UserItem";
-import "./UsersList.css";
 
 const UsersList = (props) => {
   console.log(props.users);
@@ -16,9 +15,23 @@ const UsersList = (props) => {
   ));
 
   return (
-    <React.Fragment>
-      <div className="list">{data}</div>
-    </React.Fragment>
+    <div className="max-w-[60%] m-auto">
+      <table className="table-auto min-w-full">
+        <thead className="bg-secondary">
+          <tr>
+            <th className="text-white pl-4 text-left p-1 border-none rounded-tl-lg">
+              UID
+            </th>
+            <th className="text-white pl-4 text-left p-1">Name</th>
+            <th className="text-white pl-4 text-left p-1">Email</th>
+            <th className="text-white pl-4 text-left p-1">Role</th>
+            <th></th>
+            <th className="border-none rounded-tr-lg"></th>
+          </tr>
+        </thead>
+        <tbody className="bg-whitesmoke">{data}</tbody>
+      </table>
+    </div>
   );
 };
 export default UsersList;

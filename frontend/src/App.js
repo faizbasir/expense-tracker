@@ -7,7 +7,7 @@ import React from "react";
 import Dashboard from "./pages/Dashboard";
 import { AuthContext } from "./shared/context/auth-context";
 import { useState } from "react";
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import EditExpense from "./pages/EditExpense";
 
 function App() {

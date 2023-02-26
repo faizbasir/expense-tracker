@@ -7,10 +7,11 @@ import {
   VALIDATOR_REQUIRED,
 } from "../shared/util/Validator";
 import { AuthContext } from "../shared/context/auth-context";
-import "./Login.css";
+// import "./Login.css";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
+import image from "../shared/UIElements/images/landing.png";
 
 const Login = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
@@ -41,11 +42,23 @@ const Login = () => {
 
   const memberCheck = isMember ? (
     <p>
-      Not a member? Register <a onClick={toggleMember}>here</a>
+      Not a member? Register{" "}
+      <a
+        className="text-secondary underline decoration-solid cursor-pointer hover:text-white"
+        onClick={toggleMember}
+      >
+        here
+      </a>
     </p>
   ) : (
     <p>
-      Already a member? Login <a onClick={toggleMember}>here</a>
+      Already a member? Login{" "}
+      <a
+        className="text-secondary underline decoration-solid cursor-pointer hover:text-white"
+        onClick={toggleMember}
+      >
+        here
+      </a>
     </p>
   );
 
@@ -85,49 +98,60 @@ const Login = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onCancel={clearError} />
-      <form onSubmit={loginHandler} className="login-form">
-        {isMember ? <h1>Login</h1> : <h1>Register</h1>}
-        <Input
-          id="name"
-          label="Name"
-          errorText="Please input a valid username"
-          element="input"
-          type="text"
-          onInput={inputHandler}
-          validators={[VALIDATOR_MINLENGTH(5)]}
-        />
-        {!isMember && (
+      <div className="flex">
+        <div className="w-[50%]">
+          <img src={image} className="m-auto" />
+          <h3 className="m-auto w-fit text-white">
+            Start tracking your spending today!
+          </h3>
+        </div>
+        <form
+          onSubmit={loginHandler}
+          className="my-auto ml-20 text-white w-[30%]"
+        >
+          {/* {isMember ? <h1>Login</h1> : <h1>Register</h1>} */}
           <Input
-            id="email"
-            label="Email"
-            errorText="Please input a valid email"
+            id="name"
+            label="Name"
+            errorText="Please input a valid username"
             element="input"
-            type="email"
+            type="text"
             onInput={inputHandler}
-            validators={[VALIDATOR_REQUIRED()]}
+            validators={[VALIDATOR_MINLENGTH(5)]}
           />
-        )}
-        <Input
-          id="password"
-          label="Password"
-          errorText="Please input a valid password"
-          element="input"
-          type="password"
-          onInput={inputHandler}
-          validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_MAXLENGTH(12)]}
-        />
-        {isMember && (
-          <Button default disabled={!formState.isValid}>
-            Login
-          </Button>
-        )}
-        {!isMember && (
-          <Button default disabled={!formState.isValid}>
-            Register
-          </Button>
-        )}
-        {memberCheck}
-      </form>
+          {!isMember && (
+            <Input
+              id="email"
+              label="Email"
+              errorText="Please input a valid email"
+              element="input"
+              type="email"
+              onInput={inputHandler}
+              validators={[VALIDATOR_REQUIRED()]}
+            />
+          )}
+          <Input
+            id="password"
+            label="Password"
+            errorText="Please input a valid password"
+            element="input"
+            type="password"
+            onInput={inputHandler}
+            validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_MAXLENGTH(12)]}
+          />
+          {isMember && (
+            <Button default disabled={!formState.isValid}>
+              Login
+            </Button>
+          )}
+          {!isMember && (
+            <Button default disabled={!formState.isValid}>
+              Register
+            </Button>
+          )}
+          {memberCheck}
+        </form>
+      </div>
     </React.Fragment>
   );
 };
