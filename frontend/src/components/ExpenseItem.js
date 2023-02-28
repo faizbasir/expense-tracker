@@ -4,7 +4,7 @@ import Button from "../shared/UIElements/Button";
 import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
-import "./ExpenseItem.css";
+import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 
 const ExpenseItem = (props) => {
   const auth = useContext(AuthContext);
@@ -33,22 +33,6 @@ const ExpenseItem = (props) => {
 
   const element = (
     <React.Fragment>
-      <table className="modal-table">
-        <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{props.summary}</td>
-            <td>${props.amount}</td>
-            <td>{props.date}</td>
-          </tr>
-        </tbody>
-      </table>
       <footer>
         <Button danger onClick={deleteHandler}>
           Delete
@@ -62,31 +46,44 @@ const ExpenseItem = (props) => {
 
   return (
     <React.Fragment>
-      {
+      {/* {
         <Modal
           header="Are you sure you want to delete?"
           show={showDeleteModal}
           onCancel={deleteModalHandler}
           content={element}
         />
-      }
+      } */}
+
       <tbody>
         <tr>
-          <td>{props.summary}</td>
-          <td>${props.amount}</td>
-          <td>{props.date}</td>
-          <td>
-            <div className="action">
-              <Button default onClick={routeChangeHandler}>
-                Edit
-              </Button>
-              <Button danger onClick={deleteModalHandler}>
-                Delete
-              </Button>
-            </div>
+          <td className="text-md p-2">{props.id}</td>
+          <td className="text-md p-2">{props.summary}</td>
+          <td className="text-md p-2">${props.amount}</td>
+          <td className="text-md p-2">{props.date}</td>
+          <td className="text-md p-2">{props.description}</td>
+          <td className=" flex justify-evenly">
+            <HiPencil
+              className="cursor-pointer text-2xl"
+              onClick={routeChangeHandler}
+            />
+            <HiOutlineTrash
+              className="cursor-pointer text-2xl"
+              // onClick={deleteModalHandler}
+              data-modal-target="defaultModal"
+              data-modal-toggle="defaultModal"
+              type="button"
+            />
           </td>
         </tr>
       </tbody>
+
+      <div id="defaultModal" tabIndex="-1" className="z-50 hidden">
+        <p>This is the modal</p>
+        <button className="" type="button" data-modal-hide="defaultModal">
+          Close
+        </button>
+      </div>
     </React.Fragment>
   );
 };

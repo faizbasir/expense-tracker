@@ -41,7 +41,7 @@ const Input = (props) => {
         onChange={inputChangeHandler}
         onBlur={touchHandler}
         value={inputState.value}
-        className={`h-[35px] font-medium focus:outline-none  rounded-md my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.8rem] ${
+        className={`font-medium text-lg focus:outline-none rounded-2xl my-[1rem] block w-[100%] border-solid  border-2 border-[#ccc] p-[0.8rem] ${
           inputState.isTouched && !inputState.isValid
             ? " bg-pink border-red  "
             : "bg-secondary"
