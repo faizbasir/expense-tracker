@@ -7,7 +7,15 @@ const Button = (props) => {
         props.disabled
           ? "bg-grey text-whitesmoke cursor-not-allowed"
           : "bg-secondary text-white hover:bg-whitesmoke hover:text-secondary"
-      } `}
+      } ${
+        props.modalButton
+          ? "bg-white text-primary hover:bg-primary hover:text-white"
+          : ""
+      } ${
+        props.danger
+          ? "bg-red text-whitesmoke hover:bg-whitesmoke hover:text-primary"
+          : ""
+      }`}
       onClick={props.onClick}
     >
       {props.children}

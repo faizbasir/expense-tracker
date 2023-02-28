@@ -1,4 +1,4 @@
-import ErrorButton from "./ErrorButton";
+import Button from "./Button";
 import Modal from "./Modal";
 
 const ErrorModal = (props) => {
@@ -10,7 +10,11 @@ const ErrorModal = (props) => {
       header={"An unexpected error occured!"}
       content={props.error}
       show={!!props.error}
-      footer={<ErrorButton onClick={props.onCancel}>Okay</ErrorButton>}
+      footer={
+        <Button modalButton="true" onClick={props.onCancel}>
+          Okay
+        </Button>
+      }
     />
   );
 };

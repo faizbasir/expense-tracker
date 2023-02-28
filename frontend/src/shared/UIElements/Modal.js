@@ -1,11 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import Backdrop from "./Backdrop";
-import Button from "./Button";
-import { CSSTransition } from "react-transition-group";
-import { useRef } from "react";
 
 const Modal = (props) => {
+  if (props.show === false) {
+    return null;
+  }
+
   return (
     <React.Fragment>
       <div className="fixed inset-0 backdrop-blur-sm">

@@ -33,11 +33,11 @@ const ExpenseItem = (props) => {
 
   const element = (
     <React.Fragment>
-      <footer>
+      <footer className="flex justify-evenly">
         <Button danger onClick={deleteHandler}>
           Delete
         </Button>
-        <Button onClick={deleteModalHandler} default>
+        <Button modalButton onClick={deleteModalHandler} default>
           Cancel
         </Button>
       </footer>
@@ -46,14 +46,14 @@ const ExpenseItem = (props) => {
 
   return (
     <React.Fragment>
-      {/* {
+      {
         <Modal
           header="Are you sure you want to delete?"
           show={showDeleteModal}
           onCancel={deleteModalHandler}
           content={element}
         />
-      } */}
+      }
 
       <tbody>
         <tr>
@@ -69,7 +69,7 @@ const ExpenseItem = (props) => {
             />
             <HiOutlineTrash
               className="cursor-pointer text-2xl"
-              // onClick={deleteModalHandler}
+              onClick={deleteModalHandler}
               data-modal-target="defaultModal"
               data-modal-toggle="defaultModal"
               type="button"
@@ -77,13 +77,6 @@ const ExpenseItem = (props) => {
           </td>
         </tr>
       </tbody>
-
-      <div id="defaultModal" tabIndex="-1" className="z-50 hidden">
-        <p>This is the modal</p>
-        <button className="" type="button" data-modal-hide="defaultModal">
-          Close
-        </button>
-      </div>
     </React.Fragment>
   );
 };

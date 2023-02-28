@@ -108,7 +108,6 @@ const Login = () => {
           onSubmit={loginHandler}
           className="my-auto ml-20 text-white w-[30%]"
         >
-          {/* {isMember ? <h1>Login</h1> : <h1>Register</h1>} */}
           <Input
             id="name"
             label="Name"
@@ -138,16 +137,8 @@ const Login = () => {
             onInput={inputHandler}
             validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_MAXLENGTH(12)]}
           />
-          {isMember && (
-            <Button default disabled={!formState.isValid}>
-              Login
-            </Button>
-          )}
-          {!isMember && (
-            <Button default disabled={!formState.isValid}>
-              Register
-            </Button>
-          )}
+          {isMember && <Button disabled={!formState.isValid}>Login</Button>}
+          {!isMember && <Button disabled={!formState.isValid}>Register</Button>}
           {memberCheck}
         </form>
       </div>
