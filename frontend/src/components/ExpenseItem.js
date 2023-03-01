@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../shared/UIElements/Button";
+import ModalButton from "../shared/UIElements/ModalButton";
 import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
@@ -34,12 +34,12 @@ const ExpenseItem = (props) => {
   const element = (
     <React.Fragment>
       <footer className="flex justify-evenly">
-        <Button danger onClick={deleteHandler}>
+        <ModalButton danger onClick={deleteHandler}>
           Delete
-        </Button>
-        <Button modalButton onClick={deleteModalHandler} default>
+        </ModalButton>
+        <ModalButton modalButton onClick={deleteModalHandler} default>
           Cancel
-        </Button>
+        </ModalButton>
       </footer>
     </React.Fragment>
   );
@@ -70,8 +70,6 @@ const ExpenseItem = (props) => {
             <HiOutlineTrash
               className="cursor-pointer text-2xl"
               onClick={deleteModalHandler}
-              data-modal-target="defaultModal"
-              data-modal-toggle="defaultModal"
               type="button"
             />
           </td>

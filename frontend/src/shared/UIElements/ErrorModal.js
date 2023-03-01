@@ -1,4 +1,4 @@
-import Button from "./Button";
+import ModalButton from "./ModalButton";
 import Modal from "./Modal";
 
 const ErrorModal = (props) => {
@@ -11,9 +11,9 @@ const ErrorModal = (props) => {
       content={props.error}
       show={!!props.error}
       footer={
-        <Button modalButton="true" onClick={props.onCancel}>
+        <ModalButton modalButton={true} onClick={props.onCancel}>
           Okay
-        </Button>
+        </ModalButton>
       }
     />
   );

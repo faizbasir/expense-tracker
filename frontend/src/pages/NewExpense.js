@@ -90,7 +90,7 @@ const NewExpense = () => {
           onInput={inputHandler}
           validators={[VALIDATOR_MINLENGTH(5)]}
         />
-        <Button type="submit" default disabled={!formState.isValid}>
+        <Button type="submit" disabled={!formState.isValid}>
           Submit Transaction
         </Button>
       </form>

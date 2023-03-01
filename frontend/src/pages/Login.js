@@ -11,6 +11,7 @@ import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
 import image from "../shared/UIElements/images/landing.png";
+import LoginPageAnimation from "../shared/UIElements/LoginPageAnimation";
 
 const Login = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
@@ -100,9 +101,7 @@ const Login = () => {
       <div className="flex">
         <div className="w-[50%]">
           <img src={image} className="m-auto" />
-          <h3 className="m-auto w-fit text-white">
-            Start tracking your spending today!
-          </h3>
+          <LoginPageAnimation />
         </div>
         <form
           onSubmit={loginHandler}

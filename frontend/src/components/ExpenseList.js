@@ -31,7 +31,7 @@ const ExpenseList = (props) => {
         Expenses
       </h2>
 
-      <table className="bg-whitesmoke w-[70%] m-auto table-auto">
+      <table className="bg-whitesmoke w-[70%] m-auto table-auto ">
         <thead className="bg-secondary">
           <tr>
             <th className="p-2 text-left text-whitesmoke text-lg">Txn ID</th>
