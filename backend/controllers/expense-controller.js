@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const Expense = require("../models/expenses");
 const User = require("../models/users");
 const mongoose = require("mongoose");
+const overview = require("../data-processing/overview");
 
 const id = {
   userId: (req) => {
@@ -28,6 +29,28 @@ const getAllExpenses = async (req, res, next) => {
       expense.toObject({ getters: true })
     ),
   });
+};
+
+// getting expenses for overview
+const getExpensesForOverview = async (req, res, next) => {
+  const userId = id.userId(req);
+
+  //fetch data from db
+  let data;
+  try {
+    data = await User.findById(userId).populate("expenses");
+  } catch (error) {
+    return next(
+      new httpError("Not able to fetch data @ expense-controller.js:42")
+    );
+  }
+
+  if (data) {
+    const filteredExpenses = overview(data);
+    res.status(200).json({ overview: filteredExpenses });
+  } else {
+    return next(new httpError("No expenses found", 404));
+  }
 };
 
 // getting all expenses for a user
@@ -224,3 +247,4 @@ exports.getExpenseById = getExpenseById;
 exports.createNewExpense = createNewExpense;
 exports.deleteExpenseById = deleteExpenseById;
 exports.updateExpenseById = updateExpenseById;
+exports.getExpensesForOverview = getExpensesForOverview;

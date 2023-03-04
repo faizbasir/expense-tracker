@@ -2,9 +2,6 @@ import React from "react";
 import ExpenseItem from "./ExpenseItem";
 
 const ExpenseList = (props) => {
-  console.log(props);
-  console.log(props.items.length);
-
   const tableData = props.items.map((item) => (
     <ExpenseItem
       key={item.id}
@@ -27,10 +24,6 @@ const ExpenseList = (props) => {
 
   return (
     <React.Fragment>
-      <h2 className="text-whitesmoke w-[70%] m-auto mb-8 p-4 text-2xl">
-        Expenses
-      </h2>
-
       <table className="bg-whitesmoke w-[70%] m-auto table-auto ">
         <thead className="bg-secondary">
           <tr>

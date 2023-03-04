@@ -2,13 +2,13 @@ import React from "react";
 import UserItem from "./UserItem";
 
 const UsersList = (props) => {
-  console.log(props.users);
   const data = props.users.map((user) => (
     <UserItem
       key={user.id}
       id={user.id}
       name={user.name}
       email={user.email}
+      active={user.active}
       role={user.role}
       onDelete={props.onDeleteUser}
     />
@@ -25,6 +25,7 @@ const UsersList = (props) => {
             <th className="text-white pl-4 text-left p-1">Name</th>
             <th className="text-white pl-4 text-left p-1">Email</th>
             <th className="text-white pl-4 text-left p-1">Role</th>
+            <th className="text-white pl-4 text-left p-1">Active</th>
             <th></th>
             <th className="border-none rounded-tr-lg"></th>
           </tr>
