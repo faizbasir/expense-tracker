@@ -1,5 +1,5 @@
 module.exports = (data) => {
-  let expenseBreakdown = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  let expenseBreakdown = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   // console.log("overview");
   // console.log(data.expenses);

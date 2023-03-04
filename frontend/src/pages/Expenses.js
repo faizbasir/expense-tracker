@@ -10,8 +10,6 @@ const Expenses = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const [expenses, setExpenses] = useState();
 
-  console.log(auth);
-
   useEffect(() => {
     const fetchExpenses = async () => {
       try {

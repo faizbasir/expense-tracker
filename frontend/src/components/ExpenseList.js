@@ -16,7 +16,7 @@ const ExpenseList = (props) => {
 
   if (props.items.length === 0) {
     return (
-      <div className="expense-list center">
+      <div className="w-fit m-auto text-white text-3xl">
         <h2>There are no transactions yet</h2>
       </div>
     );
