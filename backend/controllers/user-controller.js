@@ -133,6 +133,7 @@ const createNewUser = async (req, res, next) => {
     email,
     password: hashedPassword,
     expenses: [],
+    active: "true",
     role: "user",
   });
 

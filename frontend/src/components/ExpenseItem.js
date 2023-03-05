@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../shared/UIElements/Button";
+import ModalButton from "../shared/UIElements/ModalButton";
 import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
-import "./ExpenseItem.css";
+import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 
 const ExpenseItem = (props) => {
   const auth = useContext(AuthContext);
@@ -33,29 +33,13 @@ const ExpenseItem = (props) => {
 
   const element = (
     <React.Fragment>
-      <table className="modal-table">
-        <thead>
-          <tr>
-            <th>Summary</th>
-            <th>Amount</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{props.summary}</td>
-            <td>${props.amount}</td>
-            <td>{props.date}</td>
-          </tr>
-        </tbody>
-      </table>
-      <footer>
-        <Button danger onClick={deleteHandler}>
+      <footer className="flex justify-evenly">
+        <ModalButton danger onClick={deleteHandler}>
           Delete
-        </Button>
-        <Button onClick={deleteModalHandler} default>
+        </ModalButton>
+        <ModalButton modalButton onClick={deleteModalHandler} default>
           Cancel
-        </Button>
+        </ModalButton>
       </footer>
     </React.Fragment>
   );
@@ -70,20 +54,24 @@ const ExpenseItem = (props) => {
           content={element}
         />
       }
+
       <tbody>
         <tr>
-          <td>{props.summary}</td>
-          <td>${props.amount}</td>
-          <td>{props.date}</td>
-          <td>
-            <div className="action">
-              <Button default onClick={routeChangeHandler}>
-                Edit
-              </Button>
-              <Button danger onClick={deleteModalHandler}>
-                Delete
-              </Button>
-            </div>
+          <td className="text-md p-2">{props.id}</td>
+          <td className="text-md p-2">{props.summary}</td>
+          <td className="text-md p-2">${props.amount}</td>
+          <td className="text-md p-2">{props.date}</td>
+          <td className="text-md p-2">{props.description}</td>
+          <td className=" flex justify-evenly">
+            <HiPencil
+              className="cursor-pointer text-2xl"
+              onClick={routeChangeHandler}
+            />
+            <HiOutlineTrash
+              className="cursor-pointer text-2xl"
+              onClick={deleteModalHandler}
+              type="button"
+            />
           </td>
         </tr>
       </tbody>

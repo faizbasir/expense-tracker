@@ -7,11 +7,11 @@ import {
   VALIDATOR_REQUIRED,
 } from "../shared/util/Validator";
 import { AuthContext } from "../shared/context/auth-context";
-// import "./Login.css";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
 import image from "../shared/UIElements/images/landing.png";
+import LoginPageAnimation from "../shared/UIElements/LoginPageAnimation";
 
 const Login = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
@@ -101,15 +101,12 @@ const Login = () => {
       <div className="flex">
         <div className="w-[50%]">
           <img src={image} className="m-auto" />
-          <h3 className="m-auto w-fit text-white">
-            Start tracking your spending today!
-          </h3>
+          <LoginPageAnimation />
         </div>
         <form
           onSubmit={loginHandler}
           className="my-auto ml-20 text-white w-[30%]"
         >
-          {/* {isMember ? <h1>Login</h1> : <h1>Register</h1>} */}
           <Input
             id="name"
             label="Name"
@@ -139,16 +136,8 @@ const Login = () => {
             onInput={inputHandler}
             validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_MAXLENGTH(12)]}
           />
-          {isMember && (
-            <Button default disabled={!formState.isValid}>
-              Login
-            </Button>
-          )}
-          {!isMember && (
-            <Button default disabled={!formState.isValid}>
-              Register
-            </Button>
-          )}
+          {isMember && <Button disabled={!formState.isValid}>Login</Button>}
+          {!isMember && <Button disabled={!formState.isValid}>Register</Button>}
           {memberCheck}
         </form>
       </div>

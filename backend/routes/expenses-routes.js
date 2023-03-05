@@ -28,6 +28,8 @@ router.post(
   expenseController.createNewExpense
 );
 
+router.post("/overview/:uid", expenseController.getExpensesForOverview);
+
 router.get("/user/:uid", expenseController.getExpensesByUserId);
 
 router.get("/:expenseId", expenseController.getExpenseById);

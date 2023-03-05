@@ -6,7 +6,6 @@ import {
 } from "../shared/util/Validator";
 import { AuthContext } from "../shared/context/auth-context";
 
-import "./NewExpense.css";
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import React, { useContext } from "react";
@@ -52,7 +51,10 @@ const NewExpense = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onCancel={clearError} />
-      <form className="new-expense-form" onSubmit={submitFormHandler}>
+      <form
+        className="max-w-[40%] m-auto text-white"
+        onSubmit={submitFormHandler}
+      >
         <Input
           element="input"
           id="summary"
@@ -88,7 +90,7 @@ const NewExpense = () => {
           onInput={inputHandler}
           validators={[VALIDATOR_MINLENGTH(5)]}
         />
-        <Button type="submit" default disabled={!formState.isValid}>
+        <Button type="submit" disabled={!formState.isValid}>
           Submit Transaction
         </Button>
       </form>

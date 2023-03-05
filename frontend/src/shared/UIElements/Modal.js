@@ -1,37 +1,33 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import Backdrop from "./Backdrop";
-import Button from "./Button";
-import { CSSTransition } from "react-transition-group";
-
-import "./Modal.css";
-import { useRef } from "react";
-
-const ModalOverlay = (props) => {
-  const content = (
-    <div className="modal__content">
-      <h3>{props.header}</h3>
-      <div>{props.content}</div>
-      <footer>{props.footer}</footer>
-    </div>
-  );
-  return ReactDOM.createPortal(content, document.getElementById("modal"));
-};
 
 const Modal = (props) => {
-  const nodeRef = useRef(null);
+  if (props.show === false) {
+    return null;
+  }
+
+  const clickHandler = (e) => {
+    if (e.target.id === "container") {
+      props.onCancel();
+    }
+  };
+
   return (
     <React.Fragment>
-      {props.show && <Backdrop onClick={props.onCancel} />}
-      <CSSTransition
-        in={props.show}
-        timeout={200}
-        mountOnEnter
-        unmountOnExit
-        classNames={"modal"}
+      <div
+        className="fixed inset-0 backdrop-blur-sm"
+        onClick={clickHandler}
+        id="container"
       >
-        {<ModalOverlay {...props} />}
-      </CSSTransition>
+        <div className="w-fit m-auto mt-40 bg-secondary rounded-xl border-solid border-2 border-white">
+          <h1 className="text-white text-2xl p-4 text-center">
+            {props.header}
+          </h1>
+          <h2 className="text-white text-lg p-4 text-center">
+            {props.content}
+          </h2>
+          <footer className="p-4">{props.footer}</footer>
+        </div>
+      </div>
     </React.Fragment>
   );
 };

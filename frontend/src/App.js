@@ -9,6 +9,8 @@ import { AuthContext } from "./shared/context/auth-context";
 import { useState } from "react";
 import { useCallback } from "react";
 import EditExpense from "./pages/EditExpense";
+import LandingPage from "./pages/LandingPage";
+import Users from "./pages/Users";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -43,6 +45,7 @@ function App() {
         <Route path="/edit/:expenseId" element={<EditExpense />} />
         <Route path="/:userId/expenses" element={<Expenses />} />
         <Route path="/:userId/dashboard" element={<Dashboard />} />
+        <Route path="/:userId/users" element={<Users />} />
         <Route
           path="/login"
           element={<Navigate to={`/${user.id}/dashboard`} exact />}
@@ -53,7 +56,7 @@ function App() {
   } else {
     routes = (
       <Routes>
-        <Route path="/" element={<Login />} exact />
+        <Route path="/" element={<LandingPage />} exact />
         <Route path="/login" element={<Login />} exact />
       </Routes>
     );

@@ -23,6 +23,7 @@ const UserItem = (props) => {
       <td className="pl-4 text-left text-md p-2">{props.name}</td>
       <td className="pl-4 text-left text-md p-2">{props.email}</td>
       <td className="pl-4 text-left text-md p-2">{props.role}</td>
+      <td className="pl-4 text-left text-md p-2">{props.active}</td>
       <td className="cursor-pointer text-2xl">
         <HiPencil />
       </td>

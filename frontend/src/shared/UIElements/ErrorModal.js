@@ -1,7 +1,9 @@
-import Button from "./Button";
+import ModalButton from "./ModalButton";
 import Modal from "./Modal";
 
 const ErrorModal = (props) => {
+  if (!!props.error === false) return null;
+
   return (
     <Modal
       onCancel={props.onCancel}
@@ -9,9 +11,9 @@ const ErrorModal = (props) => {
       content={props.error}
       show={!!props.error}
       footer={
-        <Button default onClick={props.onCancel}>
+        <ModalButton modalButton={true} onClick={props.onCancel}>
           Okay
-        </Button>
+        </ModalButton>
       }
     />
   );

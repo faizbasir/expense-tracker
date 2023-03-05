@@ -1,11 +1,7 @@
 import React from "react";
 import ExpenseItem from "./ExpenseItem";
-import "./ExpenseList.css";
 
 const ExpenseList = (props) => {
-  console.log(props);
-  console.log(props.items.length);
-
   const tableData = props.items.map((item) => (
     <ExpenseItem
       key={item.id}
@@ -20,7 +16,7 @@ const ExpenseList = (props) => {
 
   if (props.items.length === 0) {
     return (
-      <div className="expense-list center">
+      <div className="w-fit m-auto text-white text-3xl">
         <h2>There are no transactions yet</h2>
       </div>
     );
@@ -28,16 +24,17 @@ const ExpenseList = (props) => {
 
   return (
     <React.Fragment>
-      <div className="transaction-title">
-        <h2>Expenses</h2>
-      </div>
-
-      <table>
-        <thead>
+      <table className="bg-whitesmoke w-[70%] m-auto table-auto ">
+        <thead className="bg-secondary">
           <tr>
-            <th>Summary</th>
-            <th>Amount</th>
-            <th>Date</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">Txn ID</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">Summary</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">Amount</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">Date</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">
+              Description
+            </th>
+            <th></th>
           </tr>
         </thead>
         {tableData}
