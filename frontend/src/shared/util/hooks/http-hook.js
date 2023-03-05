@@ -5,10 +5,11 @@ export const useHttpClient = () => {
   const [error, setError] = useState();
 
   const sendRequest = useCallback(
-    async (url, method = "GET", body = null, headers = {}) => {
+    async (url, method = "GET", body, headers = {}) => {
       try {
         setIsLoading(true);
         const response = await fetch(url, { method, body, headers });
+        console.log(body);
         const responseData = await response.json();
         setIsLoading(false);
 

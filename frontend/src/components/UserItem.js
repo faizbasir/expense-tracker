@@ -7,8 +7,6 @@ const UserItem = (props) => {
   const auth = useContext(AuthContext);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
-  console.log(props.active);
-
   const deleteUserHandler = async () => {
     await sendRequest(
       `http://localhost:5000/api/users/${props.id}`,

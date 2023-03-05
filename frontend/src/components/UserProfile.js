@@ -7,7 +7,7 @@ const UserProfile = () => {
 
   return (
     <React.Fragment>
-      <div className="bg-secondary p-8 rounded-[2rem]">
+      <div className="bg-secondary p-8 rounded-lg">
         <img
           src={image}
           className="w-[170px] h-[170px] m-auto mb-6 rounded-lg"

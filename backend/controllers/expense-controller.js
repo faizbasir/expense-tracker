@@ -33,6 +33,7 @@ const getAllExpenses = async (req, res, next) => {
 
 // getting expenses for overview
 const getExpensesForOverview = async (req, res, next) => {
+  const { year } = req.body;
   const userId = id.userId(req);
 
   //fetch data from db
@@ -46,7 +47,7 @@ const getExpensesForOverview = async (req, res, next) => {
   }
 
   if (data) {
-    const filteredExpenses = overview(data);
+    const filteredExpenses = overview(data, year);
     res.status(200).json({ overview: filteredExpenses });
   } else {
     return next(new httpError("No expenses found", 404));
