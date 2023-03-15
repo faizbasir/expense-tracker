@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseList from "../components/ExpenseList";
 import { AuthContext } from "../shared/context/auth-context";
+import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 
 const Expenses = () => {
@@ -40,6 +41,7 @@ const Expenses = () => {
 
   return (
     <React.Fragment>
+      {isLoading && <LoadingSpinner />}
       {!isLoading && expenses && (
         <ExpenseList items={expenses} onDeleteExpense={deleteHandler} />
       )}

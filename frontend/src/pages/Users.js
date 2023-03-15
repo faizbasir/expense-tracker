@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import UsersList from "../components/UsersList";
+import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
 
 const Users = () => {
   const auth = useContext(AuthContext);
@@ -40,6 +41,7 @@ const Users = () => {
 
   return (
     <React.Fragment>
+      {isLoading && <LoadingSpinner />}
       {!isLoading && users && (
         <div>
           <UsersList users={users} onDeleteUser={deleteUserHandler} />
