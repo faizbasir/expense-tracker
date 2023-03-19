@@ -17,7 +17,7 @@ const ExpenseItem = (props) => {
   const deleteHandler = async () => {
     try {
       await sendRequest(
-        `http://localhost:5000/api/expenses/${props.id}`,
+        `http://localhost:4000/api/expenses/${props.id}`,
         "DELETE",
         null,
         { Authorization: "Bearer " + auth.token }

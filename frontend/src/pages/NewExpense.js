@@ -30,7 +30,7 @@ const NewExpense = () => {
     e.preventDefault();
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/expenses/new-expense",
+        "http://localhost:4000/api/expenses/new-expense",
         "POST",
         JSON.stringify({
           summary: formState.inputs.summary.value,

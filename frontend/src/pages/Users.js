@@ -14,7 +14,7 @@ const Users = () => {
       if (auth.user.role === "admin") {
         try {
           const responseData = await sendRequest(
-            "http://localhost:5000/api/users/all-users",
+            "http://localhost:4000/api/users/all-users",
             "GET",
             null,
             { Authorization: "Bearer " + auth.token }
@@ -29,7 +29,7 @@ const Users = () => {
   const deleteUserHandler = async () => {
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/all-users",
+        "http://localhost:4000/api/users/all-users",
         "GET",
         null,
         { Authorization: "Bearer " + auth.token }

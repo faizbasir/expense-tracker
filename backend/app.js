@@ -40,7 +40,7 @@ mongoose
     "mongodb+srv://Faiz:hell0there@cluster0.984n5hr.mongodb.net/ExpenseManager?retryWrites=true&w=majority"
   )
   .then(() => {
-    app.listen(5000);
+    app.listen(4000);
   })
   .catch((error) => {
     console.log(error);

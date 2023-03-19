@@ -18,7 +18,7 @@ const Dashboard = () => {
     const fetchOverview = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/overview/${auth.user.id}`,
+          `http://localhost:4000/api/expenses/overview/${auth.user.id}`,
           "POST",
           JSON.stringify({
             year: overviewYear,

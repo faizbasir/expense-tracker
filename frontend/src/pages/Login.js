@@ -68,7 +68,7 @@ const Login = () => {
     if (!isMember) {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/users/signup",
+          "http://localhost:4000/api/users/signup",
           "POST",
           JSON.stringify({
             name: formState.inputs.name.value,
@@ -82,7 +82,7 @@ const Login = () => {
     } else {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/users/login",
+          "http://localhost:4000/api/users/login",
           "POST",
           JSON.stringify({
             name: formState.inputs.name.value,

@@ -29,7 +29,7 @@ const EditExpense = (props) => {
     e.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:5000/api/expenses/${expenseId}`,
+        `http://localhost:4000/api/expenses/${expenseId}`,
         "PATCH",
         JSON.stringify({
           summary: formState.inputs.summary.value,
@@ -54,7 +54,7 @@ const EditExpense = (props) => {
     const fetchExpense = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/${expenseId}`,
+          `http://localhost:4000/api/expenses/${expenseId}`,
           "GET",
           null,
           { Authorization: "Bearer " + auth.token }

@@ -3,7 +3,7 @@ import Expenses from "./pages/Expenses";
 import NewExpense from "./pages/NewExpense";
 import Navigation from "./shared/Navigation/Navigation";
 import Login from "./pages/Login";
-import React from "react";
+import React, { useEffect } from "react";
 import Dashboard from "./pages/Dashboard";
 import { AuthContext } from "./shared/context/auth-context";
 import { useState } from "react";
@@ -35,6 +35,19 @@ function App() {
     setUser(null);
     localStorage.removeItem("userData");
   }, []);
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("userData"))
+    if (storedData.token){
+      const user = {
+        id: storedData.userId,
+        email: storedData.email,
+        name: storedData.name
+      }
+      login(user, storedData.token)
+    }
+
+  },[login])
 
   let routes;
 
