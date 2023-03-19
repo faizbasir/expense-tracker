@@ -61,6 +61,7 @@ const ExpenseItem = (props) => {
           <td className="text-md p-2">{props.summary}</td>
           <td className="text-md p-2">${props.amount}</td>
           <td className="text-md p-2">{props.date}</td>
+          <td className="text-md p-2">{props.type }</td>
           <td className="text-md p-2">{props.description}</td>
           <td className=" flex justify-evenly">
             <HiPencil

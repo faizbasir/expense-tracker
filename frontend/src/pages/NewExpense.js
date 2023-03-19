@@ -24,6 +24,7 @@ const NewExpense = () => {
       amount: { value: 0, isValid: false },
       date: { value: "", isValid: false },
       description: { value: "", isValid: false },
+      type: {value: "Expense", isValid: true}
     },
     false
   );
@@ -39,6 +40,7 @@ const NewExpense = () => {
           amount: formState.inputs.amount.value,
           date: formState.inputs.date.value,
           description: formState.inputs.description.value,
+          type,
           creator: auth.user.id,
         }),
         {
