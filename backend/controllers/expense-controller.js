@@ -111,12 +111,13 @@ const createNewExpense = async (req, res, next) => {
   }
 
   // create new expense object
-  const { summary, amount, description, date, creator } = req.body;
+  const { summary, amount, description, date, type, creator } = req.body;
   const createdExpense = new Expense({
     summary,
     amount,
     description,
     date,
+    type,
     creator,
   });
 
@@ -203,7 +204,7 @@ const updateExpenseById = async (req, res, next) => {
   }
 
   const expenseId = id.expenseId(req);
-  const { summary, amount, description, date } = req.body;
+  const { summary, amount, description, type, date } = req.body;
 
   // fetch expense from db
   let loadedExpense;
@@ -225,6 +226,7 @@ const updateExpenseById = async (req, res, next) => {
   loadedExpense.amount = amount;
   loadedExpense.description = description;
   loadedExpense.date = date;
+  loadedExpense.type = type;
 
   // update array with updated expense
   try {

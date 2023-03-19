@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpenseList from "../components/ExpenseList";
 import { AuthContext } from "../shared/context/auth-context";
+import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 
 const Expenses = () => {
@@ -14,7 +15,7 @@ const Expenses = () => {
     const fetchExpenses = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/expenses/user/${user}`,
+          `http://localhost:4000/api/expenses/user/${user}`,
           "GET",
           null,
           { Authorization: "Bearer " + auth.token }
@@ -29,7 +30,7 @@ const Expenses = () => {
   const deleteHandler = async () => {
     try {
       const responseData = await sendRequest(
-        `http://localhost:5000/api/expenses/user/${user}`,
+        `http://localhost:4000/api/expenses/user/${user}`,
         "get",
         null,
         { Authorization: "Bearer " + auth.token }
@@ -40,6 +41,7 @@ const Expenses = () => {
 
   return (
     <React.Fragment>
+      {isLoading && <LoadingSpinner />}
       {!isLoading && expenses && (
         <ExpenseList items={expenses} onDeleteExpense={deleteHandler} />
       )}

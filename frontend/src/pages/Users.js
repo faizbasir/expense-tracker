@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../shared/context/auth-context";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import UsersList from "../components/UsersList";
+import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
 
 const Users = () => {
   const auth = useContext(AuthContext);
@@ -13,7 +14,7 @@ const Users = () => {
       if (auth.user.role === "admin") {
         try {
           const responseData = await sendRequest(
-            "http://localhost:5000/api/users/all-users",
+            "http://localhost:4000/api/users/all-users",
             "GET",
             null,
             { Authorization: "Bearer " + auth.token }
@@ -28,7 +29,7 @@ const Users = () => {
   const deleteUserHandler = async () => {
     try {
       const responseData = await sendRequest(
-        "http://localhost:5000/api/users/all-users",
+        "http://localhost:4000/api/users/all-users",
         "GET",
         null,
         { Authorization: "Bearer " + auth.token }
@@ -40,6 +41,7 @@ const Users = () => {
 
   return (
     <React.Fragment>
+      {isLoading && <LoadingSpinner />}
       {!isLoading && users && (
         <div>
           <UsersList users={users} onDeleteUser={deleteUserHandler} />

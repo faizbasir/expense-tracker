@@ -10,6 +10,7 @@ const ExpenseList = (props) => {
       amount={item.amount}
       date={item.date}
       description={item.description}
+      type={item.type}
       onDelete={props.onDeleteExpense}
     />
   ));
@@ -31,6 +32,7 @@ const ExpenseList = (props) => {
             <th className="p-2 text-left text-whitesmoke text-lg">Summary</th>
             <th className="p-2 text-left text-whitesmoke text-lg">Amount</th>
             <th className="p-2 text-left text-whitesmoke text-lg">Date</th>
+            <th className="p-2 text-left text-whitesmoke text-lg">Type</th>
             <th className="p-2 text-left text-whitesmoke text-lg">
               Description
             </th>
