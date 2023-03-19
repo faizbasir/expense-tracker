@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import DropDownItem from "./DropDownItem";
+import { HiChevronDoubleDown} from "react-icons/hi"
 
-const DropDownList = (props) => {
+const OverviewSelectionList = (props) => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
 
@@ -18,7 +19,7 @@ const DropDownList = (props) => {
       <div className="mb-6">
         <p>Expenses for:</p>
         <div
-          className={` cursor-default bg-secondary w-fit px-4  ${
+          className={`flex cursor-default bg-secondary w-fit px-4  ${
             openDropdown ? "rounded-t-lg" : "rounded-lg"
           }`}
           onClick={dropDownHandler}
@@ -36,4 +37,4 @@ const DropDownList = (props) => {
   );
 };
 
-export default DropDownList;
+export default OverviewSelectionList;

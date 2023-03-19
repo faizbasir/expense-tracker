@@ -94,26 +94,28 @@ const EditExpense = (props) => {
             validators={[VALIDATOR_REQUIRED()]}
             value={formState.inputs.summary.value}
           />
-          <Input
-            element="input"
-            id="amount"
-            label="Transaction Amount"
-            type="number"
-            errorText="Please input a transaction amount"
-            onInput={inputHandler}
-            validators={[VALIDATOR_REQUIRED()]}
-            value={formState.inputs.amount.value}
-          />
-          <Input
-            element="input"
-            id="date"
-            label="Transaction Date"
-            type="date"
-            errorText="Please input a transaction date"
-            onInput={inputHandler}
-            validators={[VALIDATOR_REQUIRED()]}
-            value={formState.inputs.date.value}
-          />
+          <div className="flex justify-between">
+            <Input
+              element="input"
+              id="amount"
+              label="Transaction Amount"
+              type="number"
+              errorText="Please input a transaction amount"
+              onInput={inputHandler}
+              validators={[VALIDATOR_REQUIRED()]}
+              value={formState.inputs.amount.value}
+            />
+            <Input
+              element="input"
+              id="date"
+              label="Transaction Date"
+              type="date"
+              errorText="Please input a transaction date"
+              onInput={inputHandler}
+              validators={[VALIDATOR_REQUIRED()]}
+              value={formState.inputs.date.value}
+            />
+          </div>
           <Input
             id="description"
             label="Description"

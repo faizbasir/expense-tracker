@@ -8,14 +8,16 @@ import { AuthContext } from "../shared/context/auth-context";
 
 import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import ErrorModal from "../shared/UIElements/ErrorModal";
+import ExpenditureSelectionList from "../components/ExpenditureSelectionList"
 import { Navigate, useNavigate } from "react-router-dom";
 
 const NewExpense = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [type, setType] = useState("Expense")
   const [formState, inputHandler] = useForm(
     {
       summary: { value: "", isValid: false },
@@ -55,6 +57,10 @@ const NewExpense = () => {
         className="max-w-[40%] m-auto text-white"
         onSubmit={submitFormHandler}
       >
+        <div>
+          <p>Type:</p>
+          <ExpenditureSelectionList type={type} selectType={setType} />
+        </div>
         <Input
           element="input"
           id="summary"
@@ -64,24 +70,26 @@ const NewExpense = () => {
           onInput={inputHandler}
           validators={[VALIDATOR_REQUIRED()]}
         />
-        <Input
-          element="input"
-          id="amount"
-          label="Transaction Amount"
-          type="number"
-          errorText="Please input a transaction amount"
-          onInput={inputHandler}
-          validators={[VALIDATOR_REQUIRED()]}
-        />
-        <Input
-          element="input"
-          id="date"
-          label="Transaction Date"
-          type="date"
-          errorText="Please input a transaction date"
-          onInput={inputHandler}
-          validators={[VALIDATOR_REQUIRED()]}
-        />
+        <div className="flex justify-between">
+          <Input
+            element="input"
+            id="amount"
+            label="Transaction Amount"
+            type="number"
+            errorText="Please input a transaction amount"
+            onInput={inputHandler}
+            validators={[VALIDATOR_REQUIRED()]}
+          />
+          <Input
+            element="input"
+            id="date"
+            label="Transaction Date"
+            type="date"
+            errorText="Please input a transaction date"
+            onInput={inputHandler}
+            validators={[VALIDATOR_REQUIRED()]}
+            />
+          </div>
         <Input
           id="description"
           label="Description"

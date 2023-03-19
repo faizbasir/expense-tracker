@@ -3,8 +3,9 @@ import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 import UserProfile from "../components/UserProfile";
 import ExpenseGraph from "../components/ExpenseGraph";
-import DropDownList from "../components/DropDownList";
+import OverviewSelectionList from "../components/OverviewSelectionList";
 import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
+import { HiChevronDoubleDown} from "react-icons/hi"
 
 const Dashboard = () => {
   const auth = useContext(AuthContext);
@@ -43,7 +44,7 @@ const Dashboard = () => {
             <UserProfile />
           </div>
           <div className="text-white w-[75%] px-8 py-6">
-            <DropDownList
+            <OverviewSelectionList
               selectYear={setOverviewYear}
               chosenYear={overviewYear}
             />
