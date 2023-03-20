@@ -12,6 +12,7 @@ import { useHttpClient } from "../shared/util/hooks/http-hook";
 import ErrorModal from "../shared/UIElements/ErrorModal";
 import image from "../shared/UIElements/images/landing.png";
 import LoginPageAnimation from "../shared/UIElements/LoginPageAnimation";
+import ImageUploader from "../components/ImageUploader";
 
 const Login = () => {
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
@@ -107,6 +108,7 @@ const Login = () => {
           onSubmit={loginHandler}
           className="my-auto ml-20 text-white w-[30%]"
         >
+          {!isMember && <ImageUploader onInput={inputHandler} id="image" />}
           <Input
             id="name"
             label="Name"

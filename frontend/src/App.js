@@ -9,7 +9,6 @@ import { AuthContext } from "./shared/context/auth-context";
 import { useState } from "react";
 import { useCallback } from "react";
 import EditExpense from "./pages/EditExpense";
-import LandingPage from "./pages/LandingPage";
 import Users from "./pages/Users";
 import NotFound from "./pages/NotFound"
 
@@ -76,7 +75,7 @@ function App() {
   } else {
     routes = (
       <Routes>
-        <Route path="/" element={<LandingPage />} exact />
+        <Route path="/" element={<Login />} exact />
         <Route path="/login" element={<Login />} exact />
       </Routes>
     );
