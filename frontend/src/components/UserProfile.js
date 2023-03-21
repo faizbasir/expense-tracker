@@ -9,8 +9,8 @@ const UserProfile = () => {
     <React.Fragment>
       <div className="bg-secondary p-8 rounded-lg">
         <img
-          src={image}
-          className="w-[170px] h-[170px] m-auto mb-6 rounded-lg"
+          src={auth.user.image}
+          className="w-[170px] h-[170px] m-auto mb-6 rounded-full"
         />
         <div className="p-4">
           <h3 className="my-4">{`UID: ${auth.user.id}`}</h3>

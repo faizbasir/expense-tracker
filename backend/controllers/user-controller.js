@@ -133,6 +133,7 @@ const createNewUser = async (req, res, next) => {
     email,
     password: hashedPassword,
     expenses: [],
+    image: "http://localhost:4000/" + req.file.path,
     active: "true",
     role: "user",
   });

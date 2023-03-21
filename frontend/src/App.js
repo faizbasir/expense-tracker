@@ -10,12 +10,12 @@ import { useState } from "react";
 import { useCallback } from "react";
 import EditExpense from "./pages/EditExpense";
 import Users from "./pages/Users";
-import NotFound from "./pages/NotFound"
+import NotFound from "./pages/NotFound";
 
 function App() {
   const [token, setToken] = useState();
   const [user, setUser] = useState(null);
-  const [tokenExpirationDate, setTokenExpirationDate] = useState()
+  const [tokenExpirationDate, setTokenExpirationDate] = useState();
 
   const login = useCallback((user, token) => {
     setToken(token);
@@ -27,6 +27,7 @@ function App() {
         name: user.name,
         email: user.email,
         role: user.role,
+        image: user.image,
         token,
       })
     );
@@ -38,21 +39,19 @@ function App() {
     localStorage.removeItem("userData");
   }, []);
 
-  
-
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("userData"))
-    if (storedData && storedData.token){
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+    if (storedData && storedData.token) {
       const user = {
         id: storedData.userId,
         email: storedData.email,
         name: storedData.name,
-        role: storedData.role
-      }
-      login(user, storedData.token)
+        image: storedData.image,
+        role: storedData.role,
+      };
+      login(user, storedData.token);
     }
-
-  },[login])
+  }, [login]);
 
   let routes;
 
@@ -69,7 +68,7 @@ function App() {
           element={<Navigate to={`/${user.id}/dashboard`} exact />}
         />
         <Route path="/" element={<Navigate to={`/${user.id}/dashboard`} />} />
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     );
   } else {

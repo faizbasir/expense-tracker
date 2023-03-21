@@ -29,12 +29,16 @@ const Login = () => {
   const toggleMember = () => {
     if (!isMember) {
       setFormData(
-        { ...formState.inputs, email: undefined },
+        { ...formState.inputs, email: undefined, image: undefined },
         formState.inputs.name.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
-        { ...formState.inputs, email: { value: "", isValid: false } },
+        {
+          ...formState.inputs,
+          email: { value: "", isValid: false },
+          image: { value: null, isValid: false },
+        },
         false
       );
     }
@@ -68,15 +72,15 @@ const Login = () => {
 
     if (!isMember) {
       try {
+        const formData = new FormData();
+        formData.append("name", formState.inputs.name.value);
+        formData.append("password", formState.inputs.password.value);
+        formData.append("email", formState.inputs.email.value);
+        formData.append("image", formState.inputs.image.value);
         const responseData = await sendRequest(
           "http://localhost:4000/api/users/signup",
           "POST",
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            password: formState.inputs.password.value,
-            email: formState.inputs.email.value,
-          }),
-          { "Content-Type": "application/json" }
+          formData
         );
         auth.login(responseData.user, responseData.token);
       } catch (error) {}
@@ -108,7 +112,13 @@ const Login = () => {
           onSubmit={loginHandler}
           className="my-auto ml-20 text-white w-[30%]"
         >
-          {!isMember && <ImageUploader onInput={inputHandler} id="image" />}
+          {!isMember && (
+            <ImageUploader
+              onInput={inputHandler}
+              id="image"
+              errorText="Please select a valid image"
+            />
+          )}
           <Input
             id="name"
             label="Name"

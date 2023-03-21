@@ -3,9 +3,11 @@ const router = express.Router();
 const userController = require("../controllers/user-controller");
 const { check } = require("express-validator");
 const authCheck = require("../middleware/auth-middleware");
+const fileUpload = require("../middleware/file-upload");
 
 router.post(
   "/signup",
+  fileUpload.single("image"),
   [
     check("name").notEmpty().withMessage({ msg: "Name cannot be empty" }),
     check("email").isEmail().withMessage({ msg: "Enter valid email" }),
