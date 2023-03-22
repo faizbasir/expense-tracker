@@ -30,7 +30,7 @@ const UsersList = (props) => {
             <th className="border-none rounded-tr-lg"></th>
           </tr>
         </thead>
-        <tbody className="bg-whitesmoke">{data}</tbody>
+        {data}
       </table>
     </div>
   );
