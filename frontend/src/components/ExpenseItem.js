@@ -5,11 +5,13 @@ import Modal from "../shared/UIElements/Modal";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
 import { HiOutlineTrash, HiPencil } from "react-icons/hi";
+import { FiEye } from "react-icons/fi";
 
 const ExpenseItem = (props) => {
   const auth = useContext(AuthContext);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
+  const [showRecordModal, setShowRecordModal] = useState(false);
   const navigate = useNavigate();
 
   const deleteModalHandler = () => setShowDeleteModal(!showDeleteModal);
@@ -31,7 +33,11 @@ const ExpenseItem = (props) => {
     navigate(`/edit/${props.id}`);
   };
 
-  const element = (
+  const viewRecordHandler = () => {
+    setShowRecordModal(!showRecordModal);
+  };
+
+  const deleteModalElement = (
     <React.Fragment>
       <footer className="flex justify-evenly">
         <ModalButton danger onClick={deleteHandler}>
@@ -44,6 +50,30 @@ const ExpenseItem = (props) => {
     </React.Fragment>
   );
 
+  const recordModalElement = (
+    <>
+      <div className="flex text-left px-4 mb-4">
+        <div>
+          <p>Txn ID:</p>
+          <p>Txn Summary:</p>
+          <p>Txn Amount:</p>
+          <p>Txn Date:</p>
+          <p>Txn Description:</p>
+        </div>
+        <div className="ml-8">
+          <p>{props.id}</p>
+          <p>{props.summary}</p>
+          <p>${props.amount}</p>
+          <p>{props.date}</p>
+          <p>{props.description}</p>
+        </div>
+      </div>
+      <ModalButton modalButton className="m-auto" onClick={viewRecordHandler}>
+        Close
+      </ModalButton>
+    </>
+  );
+
   return (
     <React.Fragment>
       {
@@ -51,9 +81,15 @@ const ExpenseItem = (props) => {
           header="Are you sure you want to delete?"
           show={showDeleteModal}
           onCancel={deleteModalHandler}
-          content={element}
+          content={deleteModalElement}
         />
       }
+      <Modal
+        header="Transaction Details"
+        show={showRecordModal}
+        onCancel={viewRecordHandler}
+        content={recordModalElement}
+      />
 
       <tbody>
         <tr>
@@ -61,15 +97,19 @@ const ExpenseItem = (props) => {
           <td className="text-md p-2">{props.summary}</td>
           <td className="text-md p-2">${props.amount}</td>
           <td className="text-md p-2">{props.date}</td>
-          <td className="text-md p-2">{props.type }</td>
-          <td className="text-md p-2">{props.description}</td>
-          <td className=" flex justify-evenly">
+          <td className="text-md p-2">{props.type}</td>
+          <td className="text-md p-2 truncate">{props.description}</td>
+          <td className=" flex justify-evenly pt-2">
+            <FiEye
+              className="cursor-pointer text-2xl mr-2"
+              onClick={viewRecordHandler}
+            />
             <HiPencil
-              className="cursor-pointer text-2xl"
+              className="cursor-pointer text-2xl mr-2"
               onClick={routeChangeHandler}
             />
             <HiOutlineTrash
-              className="cursor-pointer text-2xl"
+              className="cursor-pointer text-2xl mr-2"
               onClick={deleteModalHandler}
               type="button"
             />

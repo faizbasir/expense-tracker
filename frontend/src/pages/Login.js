@@ -72,6 +72,7 @@ const Login = () => {
 
     if (!isMember) {
       try {
+        // use FormData to pass files instead of JSON objects
         const formData = new FormData();
         formData.append("name", formState.inputs.name.value);
         formData.append("password", formState.inputs.password.value);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import DropDownItem from "./DropDownItem";
-import { HiChevronDoubleDown} from "react-icons/hi"
+import { HiChevronDoubleDown } from "react-icons/hi";
 
 const OverviewSelectionList = (props) => {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -19,7 +19,7 @@ const OverviewSelectionList = (props) => {
       <div className="mb-6">
         <p>Expenses for:</p>
         <div
-          className={`flex cursor-default bg-secondary w-fit px-4 mt-2 ${
+          className={`flex cursor-default bg-secondary w-fit px-4 py-2 mt-2 ${
             openDropdown ? "rounded-t-2xl" : "rounded-2xl"
           }`}
           onClick={dropDownHandler}
