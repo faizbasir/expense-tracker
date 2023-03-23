@@ -26,6 +26,18 @@ const Users = () => {
     showExistingUsers();
   }, []);
 
+  const reloadHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        "http://localhost:4000/api/users/all-users",
+        "GET",
+        null,
+        { Authorization: "Bearer " + auth.token }
+      );
+      setUsers(responseData.users);
+    } catch (error) {}
+  };
+
   const deleteUserHandler = async () => {
     try {
       const responseData = await sendRequest(
@@ -44,7 +56,11 @@ const Users = () => {
       {isLoading && <LoadingSpinner />}
       {!isLoading && users && (
         <div>
-          <UsersList users={users} onDeleteUser={deleteUserHandler} />
+          <UsersList
+            users={users}
+            onReload={reloadHandler}
+            onDeleteUser={deleteUserHandler}
+          />
         </div>
       )}
     </React.Fragment>

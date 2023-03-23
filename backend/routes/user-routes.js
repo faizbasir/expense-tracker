@@ -31,9 +31,6 @@ router.patch(
   [
     check("name").notEmpty().withMessage({ msg: "Name cannot be empty" }),
     check("email").isEmail().withMessage({ msg: "Enter valid email" }),
-    check("password")
-      .isLength({ min: 5, max: 12 })
-      .withMessage({ msg: "password has to be between 5 and 12 char" }),
   ],
   userController.updateUserInfo
 );

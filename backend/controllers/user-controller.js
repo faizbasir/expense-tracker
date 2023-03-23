@@ -51,6 +51,12 @@ const login = async (req, res, next) => {
     }
   }
 
+  if (loadedUser.active === "false") {
+    return next(
+      new httpError("Account is not active. Please contact support", 403)
+    );
+  }
+
   let token;
 
   if (isValidPassword) {
@@ -181,7 +187,7 @@ const updateUserInfo = async (req, res, next) => {
   }
 
   const userId = req.params.userId;
-  const { name, email, password } = req.body;
+  const { name, email, active, role } = req.body;
 
   // fetching user details from db
   let loadedUser;
@@ -194,22 +200,11 @@ const updateUserInfo = async (req, res, next) => {
     );
   }
 
-  let hashedPassword;
-  try {
-    hashedPassword = bcrypt.hash(password, 12);
-  } catch (error) {
-    return next(
-      new httpError(
-        "Unable to update details due to technical error @ user-controller.js:201",
-        500
-      )
-    );
-  }
-
   // replacing old value with new values
   loadedUser.name = name;
   loadedUser.email = email;
-  loadedUser.password = hashedPassword;
+  loadedUser.active = active;
+  loadedUser.role = role;
 
   // save new details to db
   try {
@@ -267,7 +262,7 @@ const deleteUserByUserId = async (req, res, next) => {
 const getUserInfo = async (req, res, next) => {
   const uid = req.params.userId;
   try {
-    const user = await User.findOne({ _id: uid });
+    const user = await User.findOne({ _id: uid }, "-password");
     res.status(200).json({ user: user.toObject({ getters: true }) });
   } catch (error) {
     new httpError("Not able to fetch data @ user-controller.js:274", 500);

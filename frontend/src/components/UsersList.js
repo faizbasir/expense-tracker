@@ -11,6 +11,7 @@ const UsersList = (props) => {
       active={user.active}
       role={user.role}
       onDelete={props.onDeleteUser}
+      onReload={props.onReload}
     />
   ));
 

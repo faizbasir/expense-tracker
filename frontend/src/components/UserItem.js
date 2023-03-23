@@ -63,7 +63,13 @@ const UserItem = (props) => {
       <Modal
         show={showEditUserModal}
         onCancel={showEditUserModalHandler}
-        content={<EditUser id={props.id} />}
+        content={
+          <EditUser
+            id={props.id}
+            onCancel={showEditUserModalHandler}
+            onReload={props.onReload}
+          />
+        }
       />
       <tbody className="bg-whitesmoke">
         <tr>
