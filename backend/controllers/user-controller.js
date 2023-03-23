@@ -6,6 +6,7 @@ const Expense = require("../models/expenses");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { findOne } = require("../models/expenses");
+const ObjectId = require("mongodb").ObjectId;
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -263,8 +264,19 @@ const deleteUserByUserId = async (req, res, next) => {
   }
 };
 
+const getUserInfo = async (req, res, next) => {
+  const uid = req.params.userId;
+  try {
+    const user = await User.findOne({ _id: uid });
+    res.status(200).json({ user: user.toObject({ getters: true }) });
+  } catch (error) {
+    new httpError("Not able to fetch data @ user-controller.js:274", 500);
+  }
+};
+
 exports.getAllUsers = getAllUsers;
 exports.createNewUser = createNewUser;
 exports.login = login;
 exports.updateUserInfo = updateUserInfo;
 exports.deleteUserByUserId = deleteUserByUserId;
+exports.getUserInfo = getUserInfo;

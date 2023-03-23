@@ -4,11 +4,13 @@ import { useContext, useState } from "react";
 import { HiOutlineTrash, HiPencil } from "react-icons/hi";
 import Modal from "../shared/UIElements/Modal";
 import ModalButton from "../shared/UIElements/ModalButton";
+import EditUser from "./EditUser";
 
 const UserItem = (props) => {
   const auth = useContext(AuthContext);
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditUserModal, setShowEditUserModal] = useState(false);
 
   const deleteUserHandler = async () => {
     await sendRequest(
@@ -20,8 +22,12 @@ const UserItem = (props) => {
     props.onDelete();
   };
 
-  const showModalHandler = () => {
+  const showDeleteModalHandler = () => {
     setShowDeleteModal(!showDeleteModal);
+  };
+
+  const showEditUserModalHandler = () => {
+    setShowEditUserModal(!showEditUserModal);
   };
 
   const deleteContent = (
@@ -40,7 +46,7 @@ const UserItem = (props) => {
         <ModalButton danger onClick={deleteUserHandler}>
           Delete
         </ModalButton>
-        <ModalButton modalButton onClick={showModalHandler}>
+        <ModalButton modalButton onClick={showDeleteModalHandler}>
           Cancel
         </ModalButton>
       </div>
@@ -51,9 +57,13 @@ const UserItem = (props) => {
     <>
       <Modal
         show={showDeleteModal}
-        onCancel={showModalHandler}
         content={deleteContent}
         header="Are you sure you want to delete?"
+      />
+      <Modal
+        show={showEditUserModal}
+        onCancel={showEditUserModalHandler}
+        content={<EditUser id={props.id} />}
       />
       <tbody className="bg-whitesmoke">
         <tr>
@@ -63,10 +73,10 @@ const UserItem = (props) => {
           <td className="pl-4 text-left text-md p-2">{props.role}</td>
           <td className="pl-4 text-left text-md p-2">{props.active}</td>
           <td className="cursor-pointer text-2xl">
-            <HiPencil />
+            <HiPencil onClick={showEditUserModalHandler} />
           </td>
           <td className="cursor-pointer text-2xl">
-            <HiOutlineTrash onClick={setShowDeleteModal} />
+            <HiOutlineTrash onClick={showDeleteModalHandler} />
           </td>
         </tr>
       </tbody>

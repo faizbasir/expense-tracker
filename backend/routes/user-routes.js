@@ -24,6 +24,8 @@ router.use(authCheck);
 
 router.get("/all-users", userController.getAllUsers);
 
+router.get("/:userId", userController.getUserInfo);
+
 router.patch(
   "/:userId",
   [

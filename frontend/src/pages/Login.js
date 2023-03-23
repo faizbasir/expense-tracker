@@ -70,34 +70,37 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    if (!isMember) {
-      try {
-        // use FormData to pass files instead of JSON objects
-        const formData = new FormData();
-        formData.append("name", formState.inputs.name.value);
-        formData.append("password", formState.inputs.password.value);
-        formData.append("email", formState.inputs.email.value);
-        formData.append("image", formState.inputs.image.value);
-        const responseData = await sendRequest(
-          "http://localhost:4000/api/users/signup",
-          "POST",
-          formData
-        );
-        auth.login(responseData.user, responseData.token);
-      } catch (error) {}
+    if (!formState.isValid) {
     } else {
-      try {
-        const responseData = await sendRequest(
-          "http://localhost:4000/api/users/login",
-          "POST",
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            password: formState.inputs.password.value,
-          }),
-          { "Content-Type": "application/json" }
-        );
-        auth.login(responseData.user, responseData.token);
-      } catch (error) {}
+      if (!isMember) {
+        try {
+          // use FormData to pass files instead of JSON objects
+          const formData = new FormData();
+          formData.append("name", formState.inputs.name.value);
+          formData.append("password", formState.inputs.password.value);
+          formData.append("email", formState.inputs.email.value);
+          formData.append("image", formState.inputs.image.value);
+          const responseData = await sendRequest(
+            "http://localhost:4000/api/users/signup",
+            "POST",
+            formData
+          );
+          auth.login(responseData.user, responseData.token);
+        } catch (error) {}
+      } else {
+        try {
+          const responseData = await sendRequest(
+            "http://localhost:4000/api/users/login",
+            "POST",
+            JSON.stringify({
+              name: formState.inputs.name.value,
+              password: formState.inputs.password.value,
+            }),
+            { "Content-Type": "application/json" }
+          );
+          auth.login(responseData.user, responseData.token);
+        } catch (error) {}
+      }
     }
   };
 
