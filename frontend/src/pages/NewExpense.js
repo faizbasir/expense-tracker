@@ -10,21 +10,21 @@ import { useForm } from "../shared/util/hooks/form-hook";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import React, { useContext, useState } from "react";
 import ErrorModal from "../shared/UIElements/ErrorModal";
-import ExpenditureSelectionList from "../components/ExpenditureSelectionList"
+import ExpenditureSelectionList from "../components/ExpenditureSelectionList";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const NewExpense = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [type, setType] = useState("Expense")
+  const [type, setType] = useState("Expense");
   const [formState, inputHandler] = useForm(
     {
       summary: { value: "", isValid: false },
       amount: { value: 0, isValid: false },
       date: { value: "", isValid: false },
       description: { value: "", isValid: false },
-      type: {value: "Expense", isValid: true}
+      type: { value: "Expense", isValid: true },
     },
     false
   );
@@ -59,7 +59,7 @@ const NewExpense = () => {
         className="max-w-[40%] m-auto text-white"
         onSubmit={submitFormHandler}
       >
-        <div>
+        <div className="flex mb-4">
           <p>Type:</p>
           <ExpenditureSelectionList type={type} selectType={setType} />
         </div>
@@ -90,8 +90,8 @@ const NewExpense = () => {
             errorText="Please input a transaction date"
             onInput={inputHandler}
             validators={[VALIDATOR_REQUIRED()]}
-            />
-          </div>
+          />
+        </div>
         <Input
           id="description"
           label="Description"

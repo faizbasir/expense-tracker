@@ -1,29 +1,24 @@
 import React, { useState } from "react";
-import DropDownItem from "./DropDownItem";
 
 const OverviewSelectionList = (props) => {
-    const [openDropdown, setOpenDropdown] = useState(false)
-    
-    const clickHandler = (e) => {
-        setOpenDropdown(!openDropdown)
-        props.selectType(e.target.outerText)
-    }
+  const clickHandler = (e) => {
+    props.selectType(e.target.value);
+  };
 
-    return (
-        <>
-            <div className={`cursor-default w-[30%] text-white px-4 py-1 mt-2 bg-secondary border-solid border-2 ${openDropdown ? "rounded-t-2xl" : "rounded-2xl"}`} onClick={clickHandler}>
-                {props.type}
-            </div>
-            
-            {openDropdown &&
-                <ul className="absolute z-50 w-[12%] cursor-default rounded-b-lg bg-white transition-all duration-500 ease-in border-2 border-solid rounded-b-2xl">
-                    <DropDownItem text={"Income"} onClick={clickHandler} />
-                    <DropDownItem text={"Expense"} onClick={clickHandler} />
-                </ul>
-                }
-            
-        </>
-    )
-}
+  return (
+    <>
+      <select
+        name="txn"
+        id="txn"
+        value={props.type}
+        onChange={clickHandler}
+        className="ml-4 text-whitesmoke px-4 bg-secondary rounded-xl"
+      >
+        <option value="expense">Expense</option>
+        <option value="income">Income</option>
+      </select>
+    </>
+  );
+};
 
-export default OverviewSelectionList
+export default OverviewSelectionList;

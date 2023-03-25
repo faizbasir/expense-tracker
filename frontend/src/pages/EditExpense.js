@@ -9,7 +9,7 @@ import { useForm } from "../shared/util/hooks/form-hook";
 import { useNavigate, useParams } from "react-router-dom";
 import { useHttpClient } from "../shared/util/hooks/http-hook";
 import { AuthContext } from "../shared/context/auth-context";
-import ExpenditureSelectionList from "../components/ExpenditureSelectionList"
+import ExpenditureSelectionList from "../components/ExpenditureSelectionList";
 
 const EditExpense = (props) => {
   const expenseId = useParams().expenseId;
@@ -17,7 +17,7 @@ const EditExpense = (props) => {
   const navigate = useNavigate();
   const [expense, setExpense] = useState();
   const { isLoading, sendRequest, error, clearError } = useHttpClient();
-  const [type, setType] = useState("Expense")
+  const [type, setType] = useState("Expense");
   const [formState, inputHandler, setFormData] = useForm(
     {
       summary: { value: "", isValid: false },
@@ -64,7 +64,7 @@ const EditExpense = (props) => {
           null,
           { Authorization: "Bearer " + auth.token }
         );
-        setType(responseData.expense.type)
+        setType(responseData.expense.type);
         setExpense(responseData.expense);
         setFormData(
           {
@@ -75,7 +75,7 @@ const EditExpense = (props) => {
               value: responseData.expense.description,
               isValid: true,
             },
-            type: {value: responseData.expense.type, isValid: true},
+            type: { value: responseData.expense.type, isValid: true },
           },
           true
         );
@@ -93,7 +93,7 @@ const EditExpense = (props) => {
         >
           <div>
             <p>Type:</p>
-            <ExpenditureSelectionList type={type} selectType={setType } />
+            <ExpenditureSelectionList type={type} selectType={setType} />
           </div>
           <Input
             element="input"
