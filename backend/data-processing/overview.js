@@ -6,7 +6,7 @@ module.exports = (data, year) => {
 
   data.expenses.forEach((expense) => {
     let dateArray = expense.date.split("-");
-    if (dateArray[0] === year) {
+    if (dateArray[0] === year && expense.type === "expense") {
       let month = parseInt(dateArray[1]);
       expenseBreakdown[month - 1] += parseInt(expense.amount);
       // console.log(expenseBreakdown);
