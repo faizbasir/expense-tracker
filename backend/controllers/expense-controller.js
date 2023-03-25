@@ -47,8 +47,8 @@ const getExpensesForOverview = async (req, res, next) => {
   }
 
   if (data) {
-    const filteredExpenses = overview(data, year);
-    res.status(200).json({ overview: filteredExpenses });
+    const netCashFlow = overview(data, year);
+    res.status(200).json({ overview: netCashFlow });
   } else {
     return next(new httpError("No expenses found", 404));
   }

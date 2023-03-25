@@ -1,17 +1,16 @@
 module.exports = (data, year) => {
-  let expenseBreakdown = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
-  // console.log("overview");
-  // console.log(data.expenses);
+  let cashFlowBreakdown = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   data.expenses.forEach((expense) => {
     let dateArray = expense.date.split("-");
     if (dateArray[0] === year && expense.type === "expense") {
       let month = parseInt(dateArray[1]);
-      expenseBreakdown[month - 1] += parseInt(expense.amount);
-      // console.log(expenseBreakdown);
+      cashFlowBreakdown[month - 1] -= parseFloat(expense.amount);
+    } else if (dateArray[0] === year && expense.type === "income") {
+      let month = parseInt(dateArray[1]);
+      cashFlowBreakdown[month - 1] += parseFloat(expense.amount);
     }
   });
 
-  return expenseBreakdown;
+  return cashFlowBreakdown;
 };

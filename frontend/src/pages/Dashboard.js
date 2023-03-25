@@ -5,7 +5,6 @@ import UserProfile from "../components/UserProfile";
 import ExpenseGraph from "../components/ExpenseGraph";
 import OverviewSelectionList from "../components/OverviewSelectionList";
 import LoadingSpinner from "../shared/UIElements/LoadingSpinner";
-import { HiChevronDoubleDown} from "react-icons/hi"
 
 const Dashboard = () => {
   const auth = useContext(AuthContext);

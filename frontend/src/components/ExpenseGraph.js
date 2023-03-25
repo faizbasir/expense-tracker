@@ -59,7 +59,6 @@ const ExpenseGraph = (props) => {
         ticks: {
           color: "white",
         },
-        min: 0,
       },
       x: {
         ticks: {

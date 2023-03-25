@@ -8,7 +8,7 @@ const OverviewSelectionList = (props) => {
   return (
     <React.Fragment>
       <div className="mb-6 flex">
-        <p>Expenses for:</p>
+        <p>Cash Flow for:</p>
         <select
           name="year"
           id="year"

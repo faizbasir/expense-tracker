@@ -17,7 +17,7 @@ const NewExpense = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [type, setType] = useState("Expense");
+  const [type, setType] = useState("expense");
   const [formState, inputHandler] = useForm(
     {
       summary: { value: "", isValid: false },
