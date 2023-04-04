@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { findOne } = require("../models/expenses");
 const ObjectId = require("mongodb").ObjectId;
+const fs = require("fs");
 
 // Only for admin users
 const getAllUsers = async (req, res, next) => {
@@ -140,7 +141,7 @@ const createNewUser = async (req, res, next) => {
     email,
     password: hashedPassword,
     expenses: [],
-    image: "http://localhost:4000/" + req.file.path,
+    image: req.file.path,
     active: "true",
     role: "user",
   });
@@ -241,6 +242,8 @@ const deleteUserByUserId = async (req, res, next) => {
 
   console.log(loadedUser);
 
+  const imagePath = loadedUser.image;
+
   // Delete user and related expenses from db
   try {
     const session = await mongoose.startSession();
@@ -248,6 +251,7 @@ const deleteUserByUserId = async (req, res, next) => {
     await loadedUser.remove({ session });
     await Expense.deleteMany({ creator: userId });
     await session.commitTransaction();
+    fs.unlink(imagePath, (error) => console.log(error));
     res.status(200).json({ "Deleted User": loadedUser });
   } catch (error) {
     return next(
